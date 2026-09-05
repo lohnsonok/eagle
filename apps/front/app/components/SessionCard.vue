@@ -13,7 +13,7 @@
       </div>
       <div class="flex items-center justify-between gap-sm sm:contents">
         <div
-          v-if="price || places !== undefined"
+          v-if="price || (type && places !== undefined)"
           class="flex shrink-0 items-center gap-sm sm:flex-col sm:items-end sm:justify-center sm:gap-xs"
         >
           <p v-if="price" class="text-small text-ink-muted">

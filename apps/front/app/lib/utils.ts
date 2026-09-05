@@ -22,7 +22,8 @@ const twMerge = extendTailwindMerge({
         'control-sm',
         'container',
         'prose',
-        'grid'
+        'grid',
+        'callout'
       ]
     },
     classGroups: {

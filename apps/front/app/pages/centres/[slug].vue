@@ -281,7 +281,7 @@
               <p class="text-small text-ink-muted">
                 Avis portant sur la marque LEARN UP ACADEMY, toutes implantations confondues.
               </p>
-              <div class="mt-md hidden gap-grid sm:grid-cols-2 lg:grid">
+              <div class="mt-md hidden gap-grid sm:grid sm:grid-cols-2">
                 <TestimonialCard
                   v-for="avis in avisList"
                   :key="avis.author"

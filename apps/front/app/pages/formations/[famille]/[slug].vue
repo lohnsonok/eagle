@@ -149,32 +149,23 @@
             <div
               class="mt-md divide-y divide-rule overflow-hidden rounded-md border border-rule bg-paper"
             >
-              <details
+              <div
                 v-for="(module, index) in programme"
                 :key="module.title"
-                class="group"
-                :open="index === 0"
+                class="flex items-center gap-md p-lg"
               >
-                <summary
-                  class="flex cursor-pointer list-none items-center gap-md p-lg [&::-webkit-details-marker]:hidden"
+                <span
+                  class="flex h-xl w-xl shrink-0 items-center justify-center rounded-full bg-primary-dark text-small font-semibold text-ink-inverse"
+                  aria-hidden="true"
                 >
-                  <span
-                    class="flex h-xl w-xl shrink-0 items-center justify-center rounded-full bg-primary-dark text-small font-semibold text-ink-inverse"
-                    aria-hidden="true"
-                  >
-                    {{ index + 1 }}
-                  </span>
-                  <span class="min-w-0 flex-1">
-                    <span class="block font-semibold text-ink">{{ module.title }}</span>
-                    <span class="block text-small text-ink-muted">{{ module.description }}</span>
-                  </span>
-                  <span class="shrink-0 text-small text-ink-subtle">{{ module.duration }}</span>
-                  <IconChevronDown
-                    :size="16"
-                    class="shrink-0 text-ink-subtle transition-transform group-open:rotate-180"
-                  />
-                </summary>
-              </details>
+                  {{ index + 1 }}
+                </span>
+                <span class="min-w-0 flex-1">
+                  <span class="block font-semibold text-ink">{{ module.title }}</span>
+                  <span class="block text-small text-ink-muted">{{ module.description }}</span>
+                </span>
+                <span class="shrink-0 text-small text-ink-subtle">{{ module.duration }}</span>
+              </div>
             </div>
           </section>
 
@@ -265,52 +256,59 @@
             </p>
 
             <div class="mt-md grid gap-md sm:grid-cols-3">
-              <Card v-for="centre in centres" :key="centre.name" class="rounded-md">
-                <CardContent class="flex items-center gap-md p-md sm:block sm:p-lg">
-                  <div class="min-w-0 flex-1">
-                    <div class="flex items-start justify-between gap-sm">
-                      <h3 class="font-sans text-h4 font-semibold text-ink">{{ centre.name }}</h3>
-                      <span class="hidden shrink-0 text-right text-meta text-ink-subtle sm:block">
-                        {{ centre.department }}
+              <NuxtLink
+                v-for="centre in centres"
+                :key="centre.slug"
+                :to="`/centres/${centre.slug}`"
+                class="block"
+              >
+                <Card class="h-full rounded-md">
+                  <CardContent class="flex items-center gap-md p-md sm:block sm:p-lg">
+                    <div class="min-w-0 flex-1">
+                      <div class="flex items-start justify-between gap-sm">
+                        <h3 class="font-sans text-h4 font-semibold text-ink">{{ centre.name }}</h3>
+                        <span class="hidden shrink-0 text-right text-meta text-ink-subtle sm:block">
+                          {{ centre.department }}
+                        </span>
+                      </div>
+                      <p class="mt-xs text-small text-ink-muted sm:hidden">
+                        {{ centre.department }} · {{ centre.modalitiesShort }}
+                      </p>
+                      <p class="mt-sm hidden text-small text-ink-muted sm:block">
+                        {{ centre.modalities }}
+                      </p>
+                      <p
+                        v-if="centre.statusType !== 'neutral'"
+                        class="mt-sm hidden items-center gap-xs text-small sm:flex"
+                        :class="centre.statusType === 'warning' ? 'text-warning' : 'text-success'"
+                      >
+                        <span class="h-sm w-sm rounded-full bg-current" aria-hidden="true" />
+                        {{ centre.status }}
+                      </p>
+                      <Badge v-else variant="neutral" class="mt-sm hidden sm:inline-flex">
+                        {{ centre.status }}
+                      </Badge>
+                      <span class="mt-sm hidden text-small font-bold text-primary sm:block">
+                        Voir le centre →
                       </span>
                     </div>
-                    <p class="mt-xs text-small text-ink-muted sm:hidden">
-                      {{ centre.department }} · {{ centre.modalitiesShort }}
-                    </p>
-                    <p class="mt-sm hidden text-small text-ink-muted sm:block">
-                      {{ centre.modalities }}
-                    </p>
-                    <p
-                      v-if="centre.statusType !== 'neutral'"
-                      class="mt-sm hidden items-center gap-xs text-small sm:flex"
-                      :class="centre.statusType === 'warning' ? 'text-warning' : 'text-success'"
-                    >
-                      <span class="h-sm w-sm rounded-full bg-current" aria-hidden="true" />
-                      {{ centre.status }}
-                    </p>
-                    <Badge v-else variant="neutral" class="mt-sm hidden sm:inline-flex">
-                      {{ centre.status }}
-                    </Badge>
-                    <span class="mt-sm hidden text-small font-bold text-primary sm:block">
-                      Voir le centre →
-                    </span>
-                  </div>
-                  <div class="flex shrink-0 items-center gap-xs sm:hidden">
-                    <Badge :variant="centre.statusType">
-                      <span
-                        v-if="centre.statusType === 'success'"
-                        class="h-sm w-sm rounded-full bg-current"
-                        aria-hidden="true"
-                      />
-                      <span v-else-if="centre.statusType === 'warning'" aria-hidden="true">
-                        ▲
-                      </span>
-                      {{ centre.statusShort }}
-                    </Badge>
-                    <IconChevronRight :size="15" class="text-primary" />
-                  </div>
-                </CardContent>
-              </Card>
+                    <div class="flex shrink-0 items-center gap-xs sm:hidden">
+                      <Badge :variant="centre.statusType">
+                        <span
+                          v-if="centre.statusType === 'success'"
+                          class="h-sm w-sm rounded-full bg-current"
+                          aria-hidden="true"
+                        />
+                        <span v-else-if="centre.statusType === 'warning'" aria-hidden="true">
+                          ▲
+                        </span>
+                        {{ centre.statusShort }}
+                      </Badge>
+                      <IconChevronRight :size="15" class="text-primary" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </NuxtLink>
             </div>
           </section>
 
@@ -470,7 +468,10 @@
     </div>
 
     <!-- Barre CTA fixe mobile -->
-    <div class="fixed inset-x-0 bottom-0 z-10 border-t border-rule bg-paper p-lg lg:hidden">
+    <div
+      ref="mobileCta"
+      class="fixed inset-x-0 bottom-0 z-10 border-t border-rule bg-paper p-lg lg:hidden"
+    >
       <div class="flex items-center justify-between gap-md">
         <div class="min-w-0">
           <p class="font-semibold text-ink">{{ stickyPrice }}</p>
@@ -484,13 +485,20 @@
         </Button>
       </div>
     </div>
-    <div class="h-4xl lg:hidden" aria-hidden="true" />
+    <div class="h-4xl lg:hidden" aria-hidden="true" :style="spacerStyle" />
   </div>
 </template>
 
 <script setup lang="ts">
+import { useElementSize } from '@vueuse/core'
 import IconBuilding from '~/components/icons/IconBuilding.vue'
 import IconFactory from '~/components/icons/IconFactory.vue'
+
+const mobileCta = ref<HTMLElement | null>(null)
+const { height: mobileCtaHeight } = useElementSize(mobileCta)
+const spacerStyle = computed(() =>
+  mobileCtaHeight.value > 0 ? { height: `${mobileCtaHeight.value}px` } : {}
+)
 
 interface Session {
   day: string
@@ -505,6 +513,7 @@ interface Session {
 
 interface CentreItem {
   name: string
+  slug: string
   department: string
   modalities: string
   modalitiesShort: string
@@ -532,19 +541,42 @@ definePageMeta({
 const route = useRoute()
 
 // Maquette : seule la fiche CACES R489 existe tant que le catalogue formations
-// n'est pas branché — 404 pour tout autre slug.
-if (route.params.slug !== 'caces-r489-chariots-elevateurs') {
+// n'est pas branché — 404 pour toute autre famille ou slug.
+if (
+  route.params.famille !== 'caces-conduite-engins' ||
+  route.params.slug !== 'caces-r489-chariots-elevateurs'
+) {
   throw createError({ statusCode: 404, statusMessage: 'Page introuvable' })
 }
 
 useContentSeo(
   {
-    seo_title: 'CACES R489 — Conduite de chariots élévateurs',
+    seo_title: 'CACES R489 — Conduite de chariots élevateurs',
     seo_description:
       'Conduire en sécurité les chariots de manutention à conducteur porté, catégories 1A à 5, conformément à la recommandation R489.'
   },
-  'CACES R489 — Conduite de chariots élévateurs'
+  'CACES R489 — Conduite de chariots élevateurs'
 )
+
+useHead({
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Course',
+        name: 'CACES R489 — Conduite de chariots élevateurs',
+        description:
+          "Conduire en sécurité les chariots de manutention à conducteur porté, catégories 1A à 5, conformément à la recommandation R489 de l'Assurance Maladie.",
+        provider: {
+          '@type': 'Organization',
+          name: 'LEARN UP ACADEMY',
+          url: 'https://learnup.fr'
+        }
+      })
+    }
+  ]
+})
 
 const tags = [
   '2 à 5 jours selon catégories',
@@ -651,6 +683,7 @@ const sessions: Session[] = [
 const centres: CentreItem[] = [
   {
     name: 'Centre de Créteil',
+    slug: 'creteil',
     department: 'Val-de-Marne',
     modalities: 'Inter en centre · intra',
     modalitiesShort: 'inter / intra',
@@ -660,6 +693,7 @@ const centres: CentreItem[] = [
   },
   {
     name: 'Centre de Vitry-sur-Seine',
+    slug: 'vitry',
     department: 'Val-de-Marne',
     modalities: 'Inter en centre · intra',
     modalitiesShort: 'inter / intra',
@@ -669,6 +703,7 @@ const centres: CentreItem[] = [
   },
   {
     name: 'Centre de Melun',
+    slug: 'melun',
     department: 'Seine-et-Marne',
     modalities: 'Inter en centre · intra',
     modalitiesShort: 'inter / intra',
