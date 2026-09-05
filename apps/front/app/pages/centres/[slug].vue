@@ -11,7 +11,10 @@
             <p class="text-overline text-accent-text uppercase">
               Réseau Learn Up Academy · Val-de-Marne (94)
             </p>
-            <h1 id="hero-title" class="mt-sm font-display text-h1 font-extrabold text-ink">
+            <h1
+              id="hero-title"
+              class="mt-sm font-display text-h2 font-extrabold text-ink lg:text-h1"
+            >
               Centre LEARN UP ACADEMY de Créteil
             </h1>
             <p class="mt-sm flex items-center gap-sm text-body text-ink-body">

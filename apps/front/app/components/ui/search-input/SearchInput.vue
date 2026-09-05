@@ -16,6 +16,15 @@
       @update:model-value="onInput"
       @keydown.enter="$emit('submit', ($event.target as HTMLInputElement).value)"
     />
+    <button
+      v-if="modelValue"
+      type="button"
+      class="flex h-lg w-lg shrink-0 items-center justify-center rounded-full text-ink-subtle transition hover:bg-surface hover:text-ink"
+      :aria-label="clearLabel"
+      @click="onInput('')"
+    >
+      <IconClose :size="14" />
+    </button>
     <Button
       type="button"
       size="icon"
@@ -36,12 +45,14 @@ withDefaults(
     srLabel: string
     placeholder?: string
     buttonLabel?: string
+    clearLabel?: string
     type?: string
   }>(),
   {
     modelValue: '',
     placeholder: '',
     buttonLabel: 'Rechercher',
+    clearLabel: 'Effacer la recherche',
     type: 'text'
   }
 )

@@ -3,26 +3,36 @@ import { describe, it, expect } from 'vitest'
 import IconAccessibility from '~/components/icons/IconAccessibility.vue'
 import IconAward from '~/components/icons/IconAward.vue'
 import IconBuilding from '~/components/icons/IconBuilding.vue'
+import IconChevronLeft from '~/components/icons/IconChevronLeft.vue'
+import IconChevronRight from '~/components/icons/IconChevronRight.vue'
 import IconClock from '~/components/icons/IconClock.vue'
 import IconDownload from '~/components/icons/IconDownload.vue'
 import IconFactory from '~/components/icons/IconFactory.vue'
+import IconFilter from '~/components/icons/IconFilter.vue'
 import IconMail from '~/components/icons/IconMail.vue'
 import IconMapPin from '~/components/icons/IconMapPin.vue'
+import IconMoreHorizontal from '~/components/icons/IconMoreHorizontal.vue'
 import IconParking from '~/components/icons/IconParking.vue'
 import IconPhone from '~/components/icons/IconPhone.vue'
+import IconSearchMinus from '~/components/icons/IconSearchMinus.vue'
 import IconTimetable from '~/components/icons/IconTimetable.vue'
 
 const icons = {
   IconAccessibility,
   IconAward,
   IconBuilding,
+  IconChevronLeft,
+  IconChevronRight,
   IconClock,
+  IconMoreHorizontal,
   IconDownload,
   IconFactory,
+  IconFilter,
   IconMail,
   IconMapPin,
   IconParking,
   IconPhone,
+  IconSearchMinus,
   IconTimetable
 }
 
