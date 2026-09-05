@@ -1,25 +1,44 @@
-import { mount } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { computed, ref } from 'vue'
+import { computed, defineComponent, h, ref, Suspense, watchEffect } from 'vue'
 import FormationPage from '~/pages/formations/[famille]/[slug].vue'
 
+const navigateToMock = vi.fn()
+const refreshMock = vi.fn()
+const setResponseStatusMock = vi.fn()
 const seoMock = vi.fn()
 const headMock = vi.fn()
-const createErrorMock = vi.fn((e: { statusCode: number; statusMessage: string }) => {
-  const err = new Error(e.statusMessage) as Error & { statusCode: number }
-  err.statusCode = e.statusCode
-  return err
-})
 
-let routeMock: { params: { famille?: string; slug?: string } }
+interface RouteMock {
+  params: { famille: string; slug: string }
+  query: Record<string, string>
+  path: string
+  meta: Record<string, unknown>
+}
 
-vi.stubGlobal('ref', ref)
+let routeMock: RouteMock
+let forceError: Error | null = null
+
 vi.stubGlobal('computed', computed)
+vi.stubGlobal('ref', ref)
+vi.stubGlobal('watchEffect', watchEffect)
 vi.stubGlobal('definePageMeta', vi.fn())
 vi.stubGlobal('useRoute', () => routeMock)
-vi.stubGlobal('createError', createErrorMock)
+vi.stubGlobal('useAsyncData', async (_key: string, handler: () => Promise<unknown>) => {
+  if (forceError) {
+    return { data: ref(null), error: ref(forceError), refresh: refreshMock }
+  }
+  try {
+    return { data: ref(await handler()), error: ref(null), refresh: refreshMock }
+  } catch (e) {
+    return { data: ref(null), error: ref(e), refresh: refreshMock }
+  }
+})
+vi.stubGlobal('useRequestEvent', () => undefined)
+vi.stubGlobal('setResponseStatus', setResponseStatusMock)
 vi.stubGlobal('useContentSeo', seoMock)
 vi.stubGlobal('useHead', headMock)
+vi.stubGlobal('navigateTo', navigateToMock)
 
 vi.mock('@vueuse/core', () => ({
   useElementSize: () => ({ height: { value: 0 } })
@@ -41,7 +60,11 @@ const stubs = {
   IconDownload: true,
   IconCheck: true,
   IconAward: true,
-  IconChevronRight: true
+  IconChevronRight: true,
+  IconFileOff: true,
+  IconRefresh: true,
+  IconSparkle: true,
+  IconSearch: true
 }
 
 const validParams = {
@@ -49,14 +72,31 @@ const validParams = {
   slug: 'caces-r489-chariots-elevateurs'
 }
 
+async function mountPage() {
+  const Host = defineComponent({
+    render() {
+      return h(Suspense, () => h(FormationPage))
+    }
+  })
+  const wrapper = mount(Host, { global: { stubs } })
+  await flushPromises()
+  return wrapper
+}
+
 describe('pages/formations/[famille]/[slug]', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    routeMock = { params: { ...validParams } }
+    forceError = null
+    routeMock = {
+      params: { ...validParams },
+      query: {},
+      path: `/formations/${validParams.famille}/${validParams.slug}`,
+      meta: {}
+    }
   })
 
-  it('affiche la fiche CACES R489 pour les bons paramètres', () => {
-    const wrapper = mount(FormationPage, { global: { stubs } })
+  it('affiche la fiche CACES R489 pour les bons paramètres', async () => {
+    const wrapper = await mountPage()
 
     expect(wrapper.text()).toContain('CACES R489 — Conduite de chariots élévateurs')
     expect(wrapper.text()).toContain('À propos de cette formation')
@@ -66,8 +106,8 @@ describe('pages/formations/[famille]/[slug]', () => {
     expect(wrapper.text()).toContain('Sessions dès le 12 sept.')
   })
 
-  it('définit le SEO et le JSON-LD Course', () => {
-    mount(FormationPage, { global: { stubs } })
+  it('définit le SEO et le JSON-LD Course', async () => {
+    await mountPage()
 
     expect(seoMock).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -79,17 +119,87 @@ describe('pages/formations/[famille]/[slug]', () => {
     expect(JSON.parse(ldJson)['@type']).toBe('Course')
   })
 
-  it('jette une 404 pour une famille inconnue', () => {
-    routeMock = { params: { ...validParams, famille: 'inconnue' } }
+  it('affiche l’état indisponible et adapte breadcrumb/SEO pour un slug inconnu', async () => {
+    routeMock.params.slug = 'inconnu'
+    routeMock.path = `/formations/${validParams.famille}/inconnu`
+    const wrapper = await mountPage()
 
-    expect(() => mount(FormationPage, { global: { stubs } })).toThrow('Page introuvable')
-    expect(createErrorMock).toHaveBeenCalledWith(expect.objectContaining({ statusCode: 404 }))
+    expect(wrapper.text()).toContain("Cette formation n'est pas disponible.")
+    expect(routeMock.meta.breadcrumb).toEqual([
+      { label: 'Accueil', to: '/' },
+      { label: 'Formations', to: '/formations' },
+      { label: 'Formation indisponible' }
+    ])
+    expect(seoMock).toHaveBeenCalledWith(
+      expect.objectContaining({ seo_title: 'Formation indisponible' }),
+      'Formation indisponible'
+    )
   })
 
-  it('jette une 404 pour un slug inconnu', () => {
-    routeMock = { params: { ...validParams, slug: 'inconnu' } }
+  it('affiche l’état indisponible pour une famille inconnue', async () => {
+    routeMock.params.famille = 'inconnue'
+    routeMock.path = '/formations/inconnue/caces-r489-chariots-elevateurs'
+    const wrapper = await mountPage()
 
-    expect(() => mount(FormationPage, { global: { stubs } })).toThrow('Page introuvable')
-    expect(createErrorMock).toHaveBeenCalledWith(expect.objectContaining({ statusCode: 404 }))
+    expect(wrapper.text()).toContain("Cette formation n'est pas disponible.")
+  })
+
+  it('affiche l’état erreur quand le chargement échoue', async () => {
+    routeMock.query = { error: '1' }
+    const wrapper = await mountPage()
+
+    expect(wrapper.text()).toContain("Le contenu n'a pas pu être chargé.")
+    expect(routeMock.meta.breadcrumb).toEqual([
+      { label: 'Accueil', to: '/' },
+      { label: 'Formations', to: '/formations' },
+      { label: 'Erreur de chargement' }
+    ])
+    expect(seoMock).toHaveBeenCalledWith(
+      expect.objectContaining({ seo_title: 'Erreur de chargement' }),
+      'Erreur de chargement'
+    )
+  })
+
+  it('« Réessayer » retire le paramètre ?error=1 au lieu de relancer un appel voué à échouer', async () => {
+    routeMock.query = { error: '1', autre: 'x' }
+    const wrapper = await mountPage()
+
+    await wrapper
+      .findAll('button')
+      .find((b) => b.text().includes('Réessayer'))!
+      .trigger('click')
+
+    expect(navigateToMock).toHaveBeenCalledWith({
+      path: routeMock.path,
+      query: { autre: 'x' }
+    })
+    expect(refreshMock).not.toHaveBeenCalled()
+  })
+
+  it('« Réessayer » relance le chargement quand l’erreur ne vient pas du paramètre de simulation', async () => {
+    forceError = new Error('API down')
+    const wrapper = await mountPage()
+
+    await wrapper
+      .findAll('button')
+      .find((b) => b.text().includes('Réessayer'))!
+      .trigger('click')
+
+    expect(refreshMock).toHaveBeenCalled()
+    expect(navigateToMock).not.toHaveBeenCalled()
+  })
+
+  it('la recherche de l’état indisponible redirige vers /formations avec la requête', async () => {
+    routeMock.params.slug = 'inconnu'
+    routeMock.path = `/formations/${validParams.famille}/inconnu`
+    const wrapper = await mountPage()
+
+    await wrapper.find('#formation-search').setValue('caces')
+    await wrapper.find('form[role="search"]').trigger('submit')
+
+    expect(navigateToMock).toHaveBeenCalledWith({
+      path: '/formations',
+      query: { q: 'caces' }
+    })
   })
 })

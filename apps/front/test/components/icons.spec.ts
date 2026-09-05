@@ -8,6 +8,7 @@ import IconChevronRight from '~/components/icons/IconChevronRight.vue'
 import IconClock from '~/components/icons/IconClock.vue'
 import IconDownload from '~/components/icons/IconDownload.vue'
 import IconFactory from '~/components/icons/IconFactory.vue'
+import IconFileOff from '~/components/icons/IconFileOff.vue'
 import IconFilter from '~/components/icons/IconFilter.vue'
 import IconMail from '~/components/icons/IconMail.vue'
 import IconMapPin from '~/components/icons/IconMapPin.vue'
@@ -29,6 +30,7 @@ const icons = {
   IconMoreHorizontal,
   IconDownload,
   IconFactory,
+  IconFileOff,
   IconFilter,
   IconMail,
   IconMapPin,
