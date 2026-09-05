@@ -74,7 +74,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { Button } from '@/components/ui/button'
-import CenterMapPopup from '@/components/CenterMapPopup.vue'
+import CenterMapPopup from '@/components/Map/CenterMapPopup.vue'
 import IconPlus from '@/components/icons/IconPlus.vue'
 import IconMinus from '@/components/icons/IconMinus.vue'
 import IconMapPin from '@/components/icons/IconMapPin.vue'

@@ -182,7 +182,7 @@
           </div>
 
           <!-- Chargement : squelette de la liste -->
-          <div v-if="catalog.pending.value" aria-label="Chargement des formations">
+          <div v-if="showSkeleton" aria-label="Chargement des formations">
             <output class="sr-only">Chargement des formations</output>
             <div class="mt-lg flex flex-col gap-lg">
               <div class="h-sm w-2xl animate-pulse rounded-full bg-surface" aria-hidden="true" />
@@ -405,8 +405,15 @@ useContentSeo(
   'Catalogue de formations — LEARN UP ACADEMY'
 )
 
+// useRoute avant le premier await : le contexte Nuxt n'est pas garanti après.
+const route = useRoute()
+
 const catalog = await useCatalog()
 const formations = computed(() => catalog.data.value?.formations ?? [])
+
+// ?loading=1 force l'affichage du squelette pour prévisualiser l'état de
+// chargement (pending est déjà résolu après le SSR).
+const showSkeleton = computed(() => catalog.pending.value || route.query.loading === '1')
 
 const familyShortcuts = [
   {

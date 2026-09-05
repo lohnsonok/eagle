@@ -21,6 +21,7 @@ vi.stubGlobal('useAsyncData', async () => ({
 }))
 vi.stubGlobal('$fetch', vi.fn())
 vi.stubGlobal('logServerError', vi.fn())
+vi.stubGlobal('useRoute', () => ({ query: {} }))
 
 const stubs = {
   NuxtLink: { template: '<a><slot /></a>' },

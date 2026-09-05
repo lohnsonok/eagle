@@ -503,112 +503,36 @@
     </template>
 
     <!-- État : erreur de chargement -->
-    <section
+    <LoadError
       v-else-if="loadError"
-      class="mx-auto w-full max-w-prose px-gutter-mobile py-4xl text-center md:px-gutter"
-      aria-labelledby="load-error-title"
+      title="Le contenu n'a pas pu être chargé."
+      link-to="/formations"
+      link-label="Voir le catalogue"
+      @retry="retry"
     >
-      <div
-        class="mx-auto mb-lg flex h-4xl w-4xl items-center justify-center rounded-full bg-accent-soft"
-      >
-        <IconRefresh :size="30" class="text-accent-text" />
-      </div>
-      <h1 id="load-error-title" class="font-display text-h2 font-extrabold text-ink">
-        Le contenu n'a pas pu être chargé.
-      </h1>
-      <p class="mt-md text-body leading-relaxed text-ink-body">
-        Vérifiez votre connexion, puis réessayez. Si le problème persiste, le catalogue reste
-        accessible.
-      </p>
-      <div
-        class="mt-2xl flex flex-col items-stretch justify-center gap-md sm:flex-row sm:items-center"
-      >
-        <Button
-          type="button"
-          class="h-control gap-sm rounded-full bg-primary-dark px-lg text-button font-semibold text-ink-inverse transition hover:bg-primary"
-          @click="retry"
-        >
-          <IconRefresh :size="16" />
-          Réessayer
-        </Button>
-        <Button
-          as-child
-          variant="outline"
-          class="h-control rounded-full border-outline px-lg text-button font-semibold text-ink transition hover:border-primary"
-        >
-          <NuxtLink to="/formations">Voir le catalogue</NuxtLink>
-        </Button>
-      </div>
-    </section>
+      Vérifiez votre connexion, puis réessayez. Si le problème persiste, le catalogue reste
+      accessible.
+    </LoadError>
 
     <!-- État : formation indisponible -->
-    <section
+    <NotFound
       v-else
-      class="mx-auto w-full max-w-prose px-gutter-mobile py-4xl text-center md:px-gutter"
-      aria-labelledby="not-found-title"
+      title="Cette formation n'est pas disponible."
+      primary-to="/formations"
+      primary-label="Voir le catalogue"
+      secondary-to="#"
+      secondary-label="Être guidé dans mon choix"
+      search-placeholder="Intitulé, compétence ou certification"
+      search-label="Rechercher une formation"
+      search-input-id="formation-search"
+      @search="onErrorSearch"
     >
-      <div
-        class="mx-auto mb-lg flex h-4xl w-4xl items-center justify-center rounded-full bg-surface"
-      >
+      <template #icon>
         <IconFileOff :size="32" class="text-ink" />
-      </div>
-      <h1 id="not-found-title" class="font-display text-h2 font-extrabold text-ink lg:text-h1">
-        Cette formation n'est pas disponible.
-      </h1>
-      <p class="mt-md text-body leading-relaxed text-ink-body">
-        La page demandée n'existe pas ou n'est plus publiée. Le catalogue présente l'ensemble des
-        formations actuellement proposées.
-      </p>
-      <div
-        class="mt-2xl flex flex-col items-stretch justify-center gap-md sm:flex-row sm:items-center"
-      >
-        <Button
-          as-child
-          class="h-control rounded-full bg-accent px-lg text-button font-semibold text-ink transition hover:bg-accent-text"
-        >
-          <NuxtLink to="/formations">Voir le catalogue</NuxtLink>
-        </Button>
-        <Button
-          as-child
-          variant="outline"
-          class="h-control rounded-full border-outline px-lg text-button font-semibold text-ink transition hover:border-primary"
-        >
-          <NuxtLink to="#">Être guidé dans mon choix</NuxtLink>
-        </Button>
-      </div>
-      <form
-        class="mt-2xl text-left"
-        role="search"
-        aria-label="Rechercher une formation"
-        @submit.prevent="onErrorSearch"
-      >
-        <label
-          for="formation-search"
-          class="mb-sm block text-meta font-bold tracking-wide text-ink-muted"
-        >
-          Rechercher une formation
-        </label>
-        <div
-          class="flex items-center gap-sm rounded-full border border-primary/70 bg-paper px-md py-xs focus-within:ring-2 focus-within:ring-primary"
-        >
-          <IconSparkle :size="16" class="shrink-0 text-accent" aria-hidden="true" />
-          <input
-            id="formation-search"
-            v-model="errorSearch"
-            type="search"
-            placeholder="Intitulé, compétence ou certification"
-            class="min-w-0 flex-1 border-0 bg-transparent text-small text-ink-body outline-none placeholder:text-ink-subtle focus:ring-0"
-          />
-          <button
-            type="submit"
-            aria-label="Lancer la recherche"
-            class="flex h-control-sm w-control-sm shrink-0 items-center justify-center rounded-full bg-primary-dark text-ink-inverse transition hover:bg-primary focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:outline-none"
-          >
-            <IconSearch :size="16" aria-hidden="true" />
-          </button>
-        </div>
-      </form>
-    </section>
+      </template>
+      La page demandée n'existe pas ou n'est plus publiée. Le catalogue présente l'ensemble des
+      formations actuellement proposées.
+    </NotFound>
   </div>
 </template>
 
@@ -737,8 +661,6 @@ const seoByState: Record<PageState, { seo_title: string; seo_description: string
 }
 useContentSeo(seoByState[pageState.value], seoByState[pageState.value].seo_title)
 
-const errorSearch = ref('')
-
 function retry() {
   if (route.query.error) {
     // Retire le paramètre de simulation pour permettre un vrai rechargement.
@@ -749,11 +671,8 @@ function retry() {
   }
 }
 
-function onErrorSearch() {
-  navigateTo({
-    path: '/formations',
-    query: errorSearch.value ? { q: errorSearch.value } : {}
-  })
+function onErrorSearch(query: string) {
+  navigateTo({ path: '/formations', query: query ? { q: query } : {} })
 }
 
 useHead({

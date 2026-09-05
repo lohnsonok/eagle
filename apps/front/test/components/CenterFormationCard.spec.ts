@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
-import CenterFormationCard from '~/components/CenterFormationCard.vue'
+import CenterFormationCard from '~/components/Cards/CenterFormationCard.vue'
 
 const stubs = {
   NuxtLink: { template: '<a><slot /></a>' },

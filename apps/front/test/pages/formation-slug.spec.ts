@@ -1,6 +1,8 @@
 import { flushPromises, mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { computed, defineComponent, h, ref, Suspense, watchEffect } from 'vue'
+import LoadError from '~/components/ErrorState/LoadError.vue'
+import NotFound from '~/components/ErrorState/NotFound.vue'
 import FormationPage from '~/pages/formations/[famille]/[slug].vue'
 
 const navigateToMock = vi.fn()
@@ -57,14 +59,18 @@ const stubs = {
     template: '<div class="similaire-card">{{ title }}</div>'
   },
   CtaBanner: { template: '<div><slot /></div>' },
+  SearchInput: {
+    props: ['modelValue'],
+    emits: ['update:modelValue', 'submit'],
+    template: '<button class="search-stub" @click="$emit(\'submit\', \'caces\')" />'
+  },
   IconDownload: true,
   IconCheck: true,
   IconAward: true,
   IconChevronRight: true,
   IconFileOff: true,
   IconRefresh: true,
-  IconSparkle: true,
-  IconSearch: true
+  IconSparkle: true
 }
 
 const validParams = {
@@ -78,7 +84,7 @@ async function mountPage() {
       return h(Suspense, () => h(FormationPage))
     }
   })
-  const wrapper = mount(Host, { global: { stubs } })
+  const wrapper = mount(Host, { global: { components: { LoadError, NotFound }, stubs } })
   await flushPromises()
   return wrapper
 }
@@ -194,8 +200,7 @@ describe('pages/formations/[famille]/[slug]', () => {
     routeMock.path = `/formations/${validParams.famille}/inconnu`
     const wrapper = await mountPage()
 
-    await wrapper.find('#formation-search').setValue('caces')
-    await wrapper.find('form[role="search"]').trigger('submit')
+    await wrapper.find('.search-stub').trigger('click')
 
     expect(navigateToMock).toHaveBeenCalledWith({
       path: '/formations',
