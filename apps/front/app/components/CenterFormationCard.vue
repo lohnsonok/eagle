@@ -12,8 +12,8 @@
       </p>
       <CardDescription class="mt-sm">{{ meta }}</CardDescription>
     </CardContent>
-    <CardFooter class="flex items-center justify-between px-md pb-md pt-sm">
-      <Badge v-if="status" :variant="status.type">
+    <CardFooter class="flex flex-col items-start px-md pb-md pt-sm">
+      <Badge v-if="status" :variant="status.type" class="w-fit">
         <span
           v-if="status.type !== 'warning'"
           class="h-sm w-sm rounded-full bg-current"
@@ -25,7 +25,7 @@
       <Button
         as-child
         variant="link"
-        class="h-auto p-0 text-small font-bold text-primary hover:text-ink hover:no-underline"
+        class="mt-md h-auto self-end p-0 text-small font-bold text-primary hover:text-ink hover:no-underline"
       >
         <NuxtLink :to="to">Voir la formation →</NuxtLink>
       </Button>

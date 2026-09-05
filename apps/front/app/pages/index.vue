@@ -18,7 +18,7 @@
           Plateforme de conseil en formation professionnelle
         </span>
 
-        <h1 class="mt-5 font-display text-h1 font-extrabold text-ink md:text-hero">
+        <h1 class="mt-5 font-display text-h2 font-extrabold text-ink md:text-hero">
           Vos besoins de formation,<br />
           <span class="text-accent-text">orchestrés</span> de bout en bout.
         </h1>

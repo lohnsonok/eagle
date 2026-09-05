@@ -4,7 +4,9 @@
     <section class="bg-surface-soft">
       <div class="mx-auto max-w-container px-gutter-mobile md:px-gutter py-section">
         <p class="text-overline text-accent-text">LE RÉSEAU LEARN UP</p>
-        <h1 class="mt-sm font-display text-h1 font-extrabold text-ink">Réseau de centres</h1>
+        <h1 class="mt-sm font-display text-h2 font-extrabold text-ink lg:text-h1">
+          Réseau de centres
+        </h1>
         <p class="mt-sm max-w-prose text-body text-ink-body">
           Plus de 400 centres couvrent 96 départements. La sélection d'un département affiche les
           centres de ce territoire.

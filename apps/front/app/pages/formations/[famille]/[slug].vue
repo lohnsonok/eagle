@@ -11,7 +11,10 @@
             <p class="text-overline text-accent-text">
               CACES &amp; conduite d'engins · Formation certifiante
             </p>
-            <h1 id="formation-title" class="mt-sm font-display text-h1 font-bold text-ink">
+            <h1
+              id="formation-title"
+              class="mt-sm font-display text-h2 font-bold text-ink lg:text-h1"
+            >
               CACES R489 — Conduite de chariots élévateurs
             </h1>
             <p class="mt-md max-w-prose text-body text-ink-body">
