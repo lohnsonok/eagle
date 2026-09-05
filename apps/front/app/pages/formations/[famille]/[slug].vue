@@ -550,7 +550,7 @@
       <div
         class="mx-auto mb-lg flex h-4xl w-4xl items-center justify-center rounded-full bg-surface"
       >
-        <IconFileOff :size="28" class="text-ink" />
+        <IconFileOff :size="32" class="text-ink" />
       </div>
       <h1 id="not-found-title" class="font-display text-h2 font-extrabold text-ink lg:text-h1">
         Cette formation n'est pas disponible.
