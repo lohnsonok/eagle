@@ -419,7 +419,7 @@
         <Button
           type="button"
           class="h-control rounded-full bg-primary px-lg text-button font-semibold text-paper transition hover:bg-primary-dark"
-          @click="refresh()"
+          @click="retry"
         >
           Réessayer
         </Button>
@@ -547,38 +547,74 @@ const {
   return Promise.resolve(slug === 'creteil' ? { slug } : null)
 })
 
-const notFound = computed(() => !loadError.value && !centre.value)
+type PageState = 'found' | 'not-found' | 'error'
+const pageState = computed<PageState>(() => {
+  if (loadError.value) return 'error'
+  return centre.value ? 'found' : 'not-found'
+})
 
-// Statut 404 côté SSR quand le centre n'existe pas.
+// Statut HTTP côté SSR selon l'état affiché.
 const requestEvent = useRequestEvent()
-if (requestEvent && notFound.value) {
-  setResponseStatus(requestEvent, 404, 'Centre introuvable')
+if (requestEvent) {
+  if (pageState.value === 'error') {
+    setResponseStatus(requestEvent, 500, 'Erreur de chargement du centre')
+  } else if (pageState.value === 'not-found') {
+    setResponseStatus(requestEvent, 404, 'Centre introuvable')
+  }
 }
 
-// Breadcrumb adapté à l'état affiché.
-if (notFound.value || loadError.value) {
-  route.meta.breadcrumb = [
-    { label: 'Accueil', to: '/' },
-    { label: 'Réseau de centres', to: '/centres' },
-    { label: notFound.value ? 'Centre introuvable' : 'Erreur de chargement' }
-  ]
+// Breadcrumb adapté à l'état affiché. route.meta est partagé entre toutes
+// les routes /centres/:slug : on réassigne la valeur à chaque changement
+// d'état pour ne pas conserver le breadcrumb d'un slug précédent.
+const defaultBreadcrumb = [
+  { label: 'Accueil', to: '/' },
+  { label: 'Réseau de centres', to: '/centres' },
+  { label: 'Île-de-France', to: '/centres' },
+  { label: 'Centre de Créteil' }
+]
+const stateLabels: Record<Exclude<PageState, 'found'>, string> = {
+  'not-found': 'Centre introuvable',
+  error: 'Erreur de chargement'
 }
+watchEffect(() => {
+  const stateLabel = pageState.value === 'found' ? null : stateLabels[pageState.value]
+  route.meta.breadcrumb = stateLabel
+    ? [
+        { label: 'Accueil', to: '/' },
+        { label: 'Réseau de centres', to: '/centres' },
+        { label: stateLabel }
+      ]
+    : defaultBreadcrumb
+})
 
-useContentSeo(
-  notFound.value
-    ? {
-        seo_title: 'Centre introuvable',
-        seo_description: "Cette page de centre n'existe pas ou n'est plus disponible."
-      }
-    : {
-        seo_title: 'Centre LEARN UP ACADEMY de Créteil',
-        seo_description:
-          'CACES, habilitations électriques, SST et travaux en hauteur au centre de Créteil.'
-      },
-  notFound.value ? 'Centre introuvable' : 'Centre de Créteil'
-)
+const seoByState: Record<PageState, { seo_title: string; seo_description: string }> = {
+  found: {
+    seo_title: 'Centre LEARN UP ACADEMY de Créteil',
+    seo_description:
+      'CACES, habilitations électriques, SST et travaux en hauteur au centre de Créteil.'
+  },
+  'not-found': {
+    seo_title: 'Centre introuvable',
+    seo_description: "Cette page de centre n'existe pas ou n'est plus disponible."
+  },
+  error: {
+    seo_title: 'Erreur de chargement',
+    seo_description: "Les informations du centre n'ont pas pu être chargées."
+  }
+}
+useContentSeo(seoByState[pageState.value], seoByState[pageState.value].seo_title)
 
 const errorSearch = ref('')
+
+function retry() {
+  if (route.query.error) {
+    // Retire le paramètre de simulation pour permettre un vrai rechargement.
+    const { error: _error, ...query } = route.query
+    navigateTo({ path: route.path, query })
+  } else {
+    refresh()
+  }
+}
 
 function onErrorSearch(query: string) {
   navigateTo({ path: '/formations', query: query ? { q: query } : {} })
