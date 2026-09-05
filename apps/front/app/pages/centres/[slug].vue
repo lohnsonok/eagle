@@ -11,18 +11,15 @@
             <p class="text-overline text-accent-text uppercase">
               Réseau Learn Up Academy · Val-de-Marne (94)
             </p>
-            <h1
-              id="hero-title"
-              class="mt-sm font-display text-h1 font-extrabold text-ink xl:whitespace-nowrap"
-            >
+            <h1 id="hero-title" class="mt-sm font-display text-h1 font-extrabold text-ink">
               Centre LEARN UP ACADEMY de Créteil
             </h1>
-            <p class="mt-sm flex items-center gap-1.5 text-body text-ink-body">
+            <p class="mt-sm flex items-center gap-sm text-body text-ink-body">
               <IconMapPin :size="16" class="shrink-0 text-primary" />
               14 rue des Refuzniks, 94000 Créteil · Île-de-France
             </p>
 
-            <ul class="mt-md flex flex-wrap gap-2">
+            <ul class="mt-md flex flex-wrap gap-sm">
               <Badge v-for="tag in tags" :key="tag" as="li" variant="chip">{{ tag }}</Badge>
             </ul>
 
@@ -72,7 +69,7 @@
       <div class="flex flex-col gap-2xl lg:flex-row">
         <!-- Barre latérale -->
         <aside
-          class="order-1 flex w-full shrink-0 flex-col gap-2xl lg:order-2 lg:w-96"
+          class="order-1 flex w-full shrink-0 flex-col gap-2xl lg:order-2 lg:w-callout"
           aria-label="Informations complémentaires"
         >
           <!-- Informations pratiques -->
@@ -85,20 +82,20 @@
               </CardHeader>
               <CardContent class="p-lg pt-md">
                 <ul class="space-y-md text-small">
-                  <li class="flex gap-3">
-                    <IconMapPin :size="17" class="mt-0.5 shrink-0 text-primary" />
+                  <li class="flex gap-sm">
+                    <IconMapPin :size="17" class="mt-xs shrink-0 text-primary" />
                     <span class="text-ink-body">
                       14 rue des Refuzniks<br />94000 Créteil · Val-de-Marne · Île-de-France
                     </span>
                   </li>
-                  <li class="flex gap-3">
-                    <IconPhone :size="17" class="mt-0.5 shrink-0 text-primary" />
+                  <li class="flex gap-sm">
+                    <IconPhone :size="17" class="mt-xs shrink-0 text-primary" />
                     <NuxtLink to="tel:0184204530" class="font-medium text-ink hover:underline">
                       01 84 20 45 30
                     </NuxtLink>
                   </li>
-                  <li class="flex gap-3">
-                    <IconMail :size="17" class="mt-0.5 shrink-0 text-primary" />
+                  <li class="flex gap-sm">
+                    <IconMail :size="17" class="mt-xs shrink-0 text-primary" />
                     <NuxtLink
                       to="mailto:creteil@learnupacademy.fr"
                       class="text-ink hover:underline"
@@ -106,22 +103,22 @@
                       creteil@learnupacademy.fr
                     </NuxtLink>
                   </li>
-                  <li class="flex gap-3">
-                    <IconClock :size="17" class="mt-0.5 shrink-0 text-primary" />
+                  <li class="flex gap-sm">
+                    <IconClock :size="17" class="mt-xs shrink-0 text-primary" />
                     <span class="text-ink-body">Lundi–vendredi · 8h30–17h30</span>
                   </li>
-                  <li class="flex gap-3">
-                    <IconTimetable :size="17" class="mt-0.5 shrink-0 text-primary" />
+                  <li class="flex gap-sm">
+                    <IconTimetable :size="17" class="mt-xs shrink-0 text-primary" />
                     <span class="text-ink-body">
                       Métro 8 — Créteil Préfecture · Bus 117, arrêt Base de loisirs
                     </span>
                   </li>
-                  <li class="flex gap-3">
-                    <IconParking :size="17" class="mt-0.5 shrink-0 text-primary" />
+                  <li class="flex gap-sm">
+                    <IconParking :size="17" class="mt-xs shrink-0 text-primary" />
                     <span class="text-ink-body">Parking visiteurs sur place</span>
                   </li>
-                  <li class="flex gap-3">
-                    <IconAccessibility :size="17" class="mt-0.5 shrink-0 text-primary" />
+                  <li class="flex gap-sm">
+                    <IconAccessibility :size="17" class="mt-xs shrink-0 text-primary" />
                     <span class="text-ink-body">Locaux accessibles PMR</span>
                   </li>
                 </ul>
@@ -139,7 +136,7 @@
                   <IconMapPin :size="24" />
                   Carte Leaflet · OpenStreetMap — chargée à l'interaction
                 </div>
-                <div class="flex items-center justify-between gap-3 bg-paper px-lg py-md">
+                <div class="flex items-center justify-between gap-sm bg-paper px-lg py-md">
                   <p class="text-small text-ink-body">14 rue des Refuzniks, 94000 Créteil</p>
                   <Button
                     as-child
@@ -162,9 +159,9 @@
                 </h2>
               </CardHeader>
               <CardContent class="p-lg pt-md pb-0">
-                <div class="flex gap-3">
+                <div class="flex gap-sm">
                   <span
-                    class="flex h-9 w-9 shrink-0 items-center justify-center rounded-sm bg-surface-alt"
+                    class="flex h-control-sm w-control-sm shrink-0 items-center justify-center rounded-sm bg-surface-alt"
                     aria-hidden="true"
                   >
                     <IconAward :size="22" class="text-primary" />
@@ -181,7 +178,7 @@
                 <Button
                   as-child
                   variant="outline"
-                  class="w-full justify-center gap-2 rounded-full border-outline bg-paper px-md py-sm text-small font-bold text-ink transition hover:border-primary hover:bg-paper hover:text-ink"
+                  class="w-full justify-center gap-sm rounded-full border-outline bg-paper px-md py-sm text-small font-bold text-ink transition hover:border-primary hover:bg-paper hover:text-ink"
                 >
                   <NuxtLink to="#">
                     <IconDownload :size="15" />
@@ -214,7 +211,7 @@
 
           <!-- Formations disponibles -->
           <section id="formations" aria-labelledby="formations-title">
-            <div class="flex flex-wrap items-baseline justify-between gap-2">
+            <div class="flex flex-wrap items-baseline justify-between gap-sm">
               <h2 id="formations-title" class="font-display text-h2 font-extrabold text-ink">
                 Les formations disponibles dans ce centre
               </h2>
@@ -248,37 +245,14 @@
             <p class="mt-sm text-small text-ink-muted">Disponibilités actualisées en continu.</p>
             <ul class="mt-md space-y-md">
               <li v-for="session in sessions" :key="session.title">
-                <Card class="rounded-md">
-                  <CardContent class="flex flex-wrap items-center gap-md p-md pt-md">
-                    <div class="w-14 shrink-0 rounded-md bg-surface py-sm text-center">
-                      <p class="font-display text-h3 font-bold leading-none text-ink">
-                        {{ session.day }}
-                      </p>
-                      <p class="text-overline text-ink-muted uppercase">{{ session.month }}</p>
-                    </div>
-                    <div class="min-w-45 flex-1">
-                      <p class="font-sans text-h4 font-semibold text-ink">{{ session.title }}</p>
-                      <p class="text-small text-ink-muted">{{ session.meta }}</p>
-                    </div>
-                    <Badge :variant="session.status.type">
-                      <span
-                        v-if="session.status.type !== 'warning'"
-                        class="h-2 w-2 rounded-full bg-current"
-                        aria-hidden="true"
-                      />
-                      <span v-else aria-hidden="true">▲</span>
-                      <span class="hidden sm:inline">{{ session.status.label }}</span>
-                      <span class="sm:hidden">{{ session.placesMobile }}</span>
-                    </Badge>
-                    <Button
-                      as-child
-                      variant="outline"
-                      class="h-auto rounded-full border-outline bg-paper px-md py-xs text-small font-bold text-ink transition hover:border-primary hover:bg-paper"
-                    >
-                      <NuxtLink to="#">Voir la session</NuxtLink>
-                    </Button>
-                  </CardContent>
-                </Card>
+                <SessionCard
+                  :day="session.day"
+                  :month="session.month"
+                  :title="session.title"
+                  :meta="session.meta"
+                  :places="session.places"
+                  :type="session.type"
+                />
               </li>
             </ul>
             <Button
@@ -294,21 +268,8 @@
           <section aria-labelledby="avis-title">
             <h2 id="avis-title" class="font-display text-h2 font-extrabold text-ink">Avis</h2>
 
-            <div class="mt-sm rounded-md bg-surface p-md lg:hidden">
-              <div class="flex flex-wrap items-center gap-2">
-                <span class="font-display text-h2 font-bold text-ink">
-                  4,7<span class="text-h4 font-normal text-ink-muted">/5</span>
-                </span>
-                <span class="text-accent" aria-hidden="true">★★★★★</span>
-                <span class="text-small text-ink-muted">214 avis Google</span>
-              </div>
-              <p class="text-small text-ink-muted">
-                Avis portant sur la marque LEARN UP ACADEMY, toutes implantations confondues.
-              </p>
-            </div>
-
-            <div class="hidden lg:block">
-              <div class="mt-sm flex items-center gap-2">
+            <div class="mt-sm rounded-md bg-surface p-md lg:bg-transparent lg:p-0">
+              <div class="flex flex-wrap items-center gap-sm">
                 <span class="font-display text-h2 font-bold text-ink">
                   4,7<span class="text-h4 font-normal text-ink-muted">/5</span>
                 </span>
@@ -318,9 +279,9 @@
                 </span>
               </div>
               <p class="text-small text-ink-muted">
-                Ces avis portent sur la marque LEARN UP ACADEMY, toutes implantations confondues.
+                Avis portant sur la marque LEARN UP ACADEMY, toutes implantations confondues.
               </p>
-              <div class="mt-md grid gap-grid sm:grid-cols-2">
+              <div class="mt-md hidden gap-grid sm:grid sm:grid-cols-2">
                 <TestimonialCard
                   v-for="avis in avisList"
                   :key="avis.author"
@@ -334,7 +295,7 @@
 
           <!-- Actualités -->
           <section aria-labelledby="actus-title">
-            <div class="flex flex-wrap items-baseline justify-between gap-2">
+            <div class="flex flex-wrap items-baseline justify-between gap-sm">
               <h2 id="actus-title" class="font-display text-h2 font-extrabold text-ink">
                 Actualités de ce centre
               </h2>
@@ -370,39 +331,29 @@
       </div>
 
       <!-- Bandeau CTA -->
-      <section
-        class="mt-2xl flex flex-wrap items-center justify-between gap-2xl rounded-md bg-primary-dark p-lg text-ink-inverse py-xl"
-        aria-labelledby="cta-title"
+      <CtaBanner
+        class="mt-2xl"
+        title="Un besoin de formation sur ce territoire ?"
+        text="La demande transmet automatiquement le centre, la ville et la formation concernée — sans ressaisie."
       >
-        <div class="max-w-prose">
-          <h2 id="cta-title" class="font-display text-h3 font-bold text-ink-inverse">
-            Un besoin de formation sur ce territoire ?
-          </h2>
-          <p class="mt-sm text-small text-ink-inverse/70">
-            La demande transmet automatiquement le centre, la ville et la formation concernée — sans
-            ressaisie.
-          </p>
-        </div>
-        <div class="flex w-full flex-col gap-md sm:w-auto sm:flex-row">
-          <Button
-            as-child
-            class="h-control w-full rounded-full bg-paper px-lg py-sm text-center text-button font-bold text-ink transition hover:bg-surface sm:w-auto"
-          >
-            <NuxtLink to="#">Demander une formation</NuxtLink>
-          </Button>
-          <Button
-            as-child
-            variant="outline"
-            class="h-control w-full rounded-full border-outline-inverse bg-transparent px-lg py-sm text-center text-button font-medium text-ink-inverse transition hover:border-ink-inverse hover:bg-ink-inverse/10 sm:w-auto"
-          >
-            <NuxtLink to="#">Parler à un conseiller</NuxtLink>
-          </Button>
-        </div>
-      </section>
+        <Button
+          as-child
+          class="h-control w-full rounded-full bg-paper px-lg py-sm text-center text-button font-bold text-ink transition hover:bg-surface sm:w-auto"
+        >
+          <NuxtLink to="#">Demander une formation</NuxtLink>
+        </Button>
+        <Button
+          as-child
+          variant="outline"
+          class="h-control w-full rounded-full border-outline-inverse bg-transparent px-lg py-sm text-center text-button font-medium text-ink-inverse transition hover:border-ink-inverse hover:bg-ink-inverse/10 sm:w-auto"
+        >
+          <NuxtLink to="#">Parler à un conseiller</NuxtLink>
+        </Button>
+      </CtaBanner>
 
       <!-- Autres centres -->
       <section class="mt-2xl" aria-labelledby="autres-title">
-        <div class="flex flex-wrap items-baseline justify-between gap-2">
+        <div class="flex flex-wrap items-baseline justify-between gap-sm">
           <h2 id="autres-title" class="font-display text-h2 font-extrabold text-ink">
             Autres centres en Île-de-France
           </h2>
@@ -456,8 +407,8 @@ interface Session {
   month: string
   title: string
   meta: string
-  placesMobile: string
-  status: { type: 'success' | 'warning'; label: string }
+  places: number
+  type: 'success' | 'warning'
 }
 
 interface ArticleItem {
@@ -484,6 +435,14 @@ definePageMeta({
     { label: 'Centre de Créteil' }
   ]
 })
+
+const route = useRoute()
+
+// Maquette : seule la page Créteil existe tant que le catalogue centres
+// n'est pas branché — 404 pour tout autre slug.
+if (route.params.slug !== 'creteil') {
+  throw createError({ statusCode: 404, statusMessage: 'Page introuvable' })
+}
 
 useContentSeo(
   {
@@ -536,24 +495,24 @@ const sessions: Session[] = [
     month: 'Sept',
     title: 'CACES R489 — cat. 3 · initial',
     meta: '3 jours · en centre · Créteil',
-    placesMobile: '5 places',
-    status: { type: 'success', label: '5 places disponibles' }
+    places: 5,
+    type: 'success'
   },
   {
     day: '18',
     month: 'Sept',
     title: 'SST — formation initiale',
     meta: '2 jours · en centre · Créteil',
-    placesMobile: '2 places',
-    status: { type: 'warning', label: '2 places disponibles' }
+    places: 2,
+    type: 'warning'
   },
   {
     day: '24',
     month: 'Sept',
     title: 'Habilitation B1-B2-BR — recyclage',
     meta: '1,5 jour · en centre · Créteil',
-    placesMobile: '8 places',
-    status: { type: 'success', label: '8 places disponibles' }
+    places: 8,
+    type: 'success'
   }
 ]
 
