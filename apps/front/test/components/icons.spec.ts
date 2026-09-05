@@ -11,9 +11,11 @@ import IconFactory from '~/components/icons/IconFactory.vue'
 import IconFilter from '~/components/icons/IconFilter.vue'
 import IconMail from '~/components/icons/IconMail.vue'
 import IconMapPin from '~/components/icons/IconMapPin.vue'
+import IconMapPinOff from '~/components/icons/IconMapPinOff.vue'
 import IconMoreHorizontal from '~/components/icons/IconMoreHorizontal.vue'
 import IconParking from '~/components/icons/IconParking.vue'
 import IconPhone from '~/components/icons/IconPhone.vue'
+import IconRefresh from '~/components/icons/IconRefresh.vue'
 import IconSearchMinus from '~/components/icons/IconSearchMinus.vue'
 import IconTimetable from '~/components/icons/IconTimetable.vue'
 
@@ -30,8 +32,10 @@ const icons = {
   IconFilter,
   IconMail,
   IconMapPin,
+  IconMapPinOff,
   IconParking,
   IconPhone,
+  IconRefresh,
   IconSearchMinus,
   IconTimetable
 }
