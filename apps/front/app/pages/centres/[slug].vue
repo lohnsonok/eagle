@@ -397,93 +397,34 @@
     </template>
 
     <!-- État : erreur de chargement -->
-    <section
+    <LoadError
       v-else-if="loadError"
-      class="mx-auto w-full max-w-prose px-gutter-mobile py-4xl text-center md:px-gutter"
-      aria-labelledby="load-error-title"
+      title="Les informations du centre n'ont pas pu être chargées."
+      link-to="/centres"
+      link-label="Voir le réseau de centres"
+      @retry="retry"
     >
-      <div
-        class="mx-auto mb-lg flex h-4xl w-4xl items-center justify-center rounded-full bg-accent/15"
-      >
-        <IconRefresh :size="30" class="text-accent-text" />
-      </div>
-      <h1 id="load-error-title" class="font-display text-h2 font-extrabold text-ink">
-        Les informations du centre n'ont pas pu être chargées.
-      </h1>
-      <p class="mt-md text-body leading-relaxed text-ink-body">
-        Le problème est temporaire. Vous pouvez réessayer, ou consulter le réseau de centres.
-      </p>
-      <div
-        class="mt-2xl flex flex-col items-stretch justify-center gap-md sm:flex-row sm:items-center"
-      >
-        <Button
-          type="button"
-          class="h-control rounded-full bg-primary px-lg text-button font-semibold text-paper transition hover:bg-primary-dark"
-          @click="retry"
-        >
-          Réessayer
-        </Button>
-        <Button
-          as-child
-          variant="outline"
-          class="h-control rounded-full border-outline px-lg text-button font-semibold text-ink transition hover:border-primary"
-        >
-          <NuxtLink to="/centres">Voir le réseau de centres</NuxtLink>
-        </Button>
-      </div>
-    </section>
+      Le problème est temporaire. Vous pouvez réessayer, ou consulter le réseau de centres.
+    </LoadError>
 
     <!-- État : centre introuvable -->
-    <section
+    <NotFound
       v-else
-      class="mx-auto w-full max-w-prose px-gutter-mobile py-4xl text-center md:px-gutter"
-      aria-labelledby="not-found-title"
+      title="Centre introuvable"
+      primary-to="/centres"
+      primary-label="Voir le réseau LEARN UP"
+      secondary-to="/formations"
+      secondary-label="Trouver ma formation"
+      search-placeholder="Décrivez votre besoin — formation, ville, échéance"
+      search-input-id="centre-search"
+      @search="onErrorSearch"
     >
-      <div
-        class="mx-auto mb-lg flex h-4xl w-4xl items-center justify-center rounded-full bg-surface"
-      >
+      <template #icon>
         <IconMapPinOff :size="28" class="text-ink" />
-      </div>
-      <h1 id="not-found-title" class="font-display text-h2 font-extrabold text-ink lg:text-h1">
-        Centre introuvable
-      </h1>
-      <p class="mt-md text-body leading-relaxed text-ink-body">
-        Cette page de centre n'existe pas ou n'est plus disponible. Le réseau
-        LEARN&nbsp;UP&nbsp;ACADEMY compte plus de 400 centres répartis dans 96 départements.
-      </p>
-      <div
-        class="mt-2xl flex flex-col items-stretch justify-center gap-md sm:flex-row sm:items-center"
-      >
-        <Button
-          as-child
-          class="h-control rounded-full bg-accent px-lg text-button font-semibold text-ink transition hover:bg-accent-text"
-        >
-          <NuxtLink to="/centres">Voir le réseau LEARN UP</NuxtLink>
-        </Button>
-        <Button
-          as-child
-          variant="outline"
-          class="h-control rounded-full border-outline px-lg text-button font-semibold text-ink transition hover:border-primary"
-        >
-          <NuxtLink to="/formations">Trouver ma formation</NuxtLink>
-        </Button>
-      </div>
-      <form class="mt-2xl" role="search" aria-label="Rechercher une formation" @submit.prevent>
-        <SearchInput
-          v-model="errorSearch"
-          input-id="centre-search"
-          sr-label="Décrivez votre besoin"
-          placeholder="Décrivez votre besoin — formation, ville, échéance"
-          button-label="Rechercher"
-          class="w-full"
-          @submit="onErrorSearch"
-        >
-          <template #icon>
-            <IconSparkle :size="18" class="shrink-0 text-accent" />
-          </template>
-        </SearchInput>
-      </form>
-    </section>
+      </template>
+      Cette page de centre n'existe pas ou n'est plus disponible. Le réseau
+      LEARN&nbsp;UP&nbsp;ACADEMY compte plus de 400 centres répartis dans 96 départements.
+    </NotFound>
   </div>
 </template>
 
@@ -603,8 +544,6 @@ const seoByState: Record<PageState, { seo_title: string; seo_description: string
   }
 }
 useContentSeo(seoByState[pageState.value], seoByState[pageState.value].seo_title)
-
-const errorSearch = ref('')
 
 function retry() {
   if (route.query.error) {

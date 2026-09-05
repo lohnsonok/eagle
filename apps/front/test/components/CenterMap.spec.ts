@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
-import CenterMap from '~/components/CenterMap.vue'
+import CenterMap from '~/components/Map/CenterMap.vue'
 
 const centers = [
   {

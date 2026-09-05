@@ -181,9 +181,30 @@
             </div>
           </div>
 
+          <!-- Chargement : squelette de la liste -->
+          <div v-if="showSkeleton" aria-label="Chargement des formations">
+            <output class="sr-only">Chargement des formations</output>
+            <div class="mt-lg flex flex-col gap-lg">
+              <div class="h-sm w-2xl animate-pulse rounded-full bg-surface" aria-hidden="true" />
+              <div class="grid grid-cols-1 gap-md sm:grid-cols-2">
+                <div
+                  v-for="i in 4"
+                  :key="i"
+                  class="flex flex-col gap-sm rounded-md border border-rule p-lg"
+                  aria-hidden="true"
+                >
+                  <div class="h-xs w-3xl animate-pulse rounded-full bg-accent/30" />
+                  <div class="h-xs w-full animate-pulse rounded-full bg-surface" />
+                  <div class="h-xs w-3/4 animate-pulse rounded-full bg-surface" />
+                  <div class="h-xs w-1/2 animate-pulse rounded-full bg-surface" />
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- État vide -->
           <div
-            v-if="filteredFormations.length === 0"
+            v-else-if="filteredFormations.length === 0"
             class="mt-lg flex flex-col items-center rounded-md border border-dashed border-rule bg-surface-soft px-lg py-4xl text-center"
           >
             <IconSearchMinus :size="30" class="text-ink-muted" />
@@ -384,8 +405,15 @@ useContentSeo(
   'Catalogue de formations — LEARN UP ACADEMY'
 )
 
+// useRoute avant le premier await : le contexte Nuxt n'est pas garanti après.
+const route = useRoute()
+
 const catalog = await useCatalog()
 const formations = computed(() => catalog.data.value?.formations ?? [])
+
+// ?loading=1 force l'affichage du squelette pour prévisualiser l'état de
+// chargement (pending est déjà résolu après le SSR).
+const showSkeleton = computed(() => catalog.pending.value || route.query.loading === '1')
 
 const familyShortcuts = [
   {

@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
-import NetworkCard from '~/components/NetworkCard.vue'
+import NetworkCard from '~/components/Cards/NetworkCard.vue'
 
 describe('NetworkCard', () => {
   it('renders the title, subtitle, body and cta link', () => {

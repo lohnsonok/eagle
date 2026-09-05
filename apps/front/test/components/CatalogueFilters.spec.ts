@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
-import CatalogueFilters from '~/components/CatalogueFilters.vue'
+import CatalogueFilters from '~/components/Catalogue/CatalogueFilters.vue'
 
 const stubs = {
   NuxtLink: { template: '<a><slot /></a>' },

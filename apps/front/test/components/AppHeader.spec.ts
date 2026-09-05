@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import { nextTick } from 'vue'
-import AppHeader from '~/components/AppHeader.vue'
+import AppHeader from '~/components/Menu/AppHeader.vue'
 
 describe('AppHeader', () => {
   it('renders the brand name and nav links', () => {

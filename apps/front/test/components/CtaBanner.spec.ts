@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
-import CtaBanner from '~/components/CtaBanner.vue'
+import CtaBanner from '~/components/Cta/CtaBanner.vue'
 
 describe('CtaBanner', () => {
   it('renders title, text and slot actions with a linked heading', () => {

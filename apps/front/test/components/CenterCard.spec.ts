@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
-import CenterCard from '~/components/CenterCard.vue'
+import CenterCard from '~/components/Cards/CenterCard.vue'
 
 describe('CenterCard', () => {
   it('renders name, distance, formations and tags without departments', () => {

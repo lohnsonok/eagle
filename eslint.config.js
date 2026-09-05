@@ -87,6 +87,7 @@ const vueGlobals = {
   defineComponent: 'readonly',
   defineProps: 'readonly',
   defineEmits: 'readonly',
+  useId: 'readonly',
   defineExpose: 'readonly',
   withDefaults: 'readonly'
 }

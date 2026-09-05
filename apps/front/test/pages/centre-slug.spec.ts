@@ -1,6 +1,8 @@
 import { flushPromises, mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { computed, defineComponent, h, ref, Suspense, watchEffect } from 'vue'
+import LoadError from '~/components/ErrorState/LoadError.vue'
+import NotFound from '~/components/ErrorState/NotFound.vue'
 import CentrePage from '~/pages/centres/[slug].vue'
 
 const navigateToMock = vi.fn()
@@ -77,7 +79,7 @@ async function mountPage() {
       return h(Suspense, () => h(CentrePage))
     }
   })
-  const wrapper = mount(Host, { global: { stubs } })
+  const wrapper = mount(Host, { global: { components: { LoadError, NotFound }, stubs } })
   await flushPromises()
   return wrapper
 }

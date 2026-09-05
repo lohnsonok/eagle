@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
-import SessionCard from '~/components/SessionCard.vue'
+import SessionCard from '~/components/Cards/SessionCard.vue'
 
 const stubs = {
   Card: { template: '<div><slot /></div>' },

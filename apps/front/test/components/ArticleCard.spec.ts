@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
-import ArticleCard from '~/components/ArticleCard.vue'
+import ArticleCard from '~/components/Cards/ArticleCard.vue'
 
 describe('ArticleCard', () => {
   it('renders category, title and date', () => {
