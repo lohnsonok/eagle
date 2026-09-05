@@ -26,7 +26,7 @@
               >
             </li>
             <li>
-              <NuxtLink to="/" class="text-ink-inverse-muted hover:text-ink-inverse"
+              <NuxtLink to="/formations" class="text-ink-inverse-muted hover:text-ink-inverse"
                 >Tout le catalogue</NuxtLink
               >
             </li>

@@ -78,6 +78,13 @@ const validParams = {
   slug: 'caces-r489-chariots-elevateurs'
 }
 
+// useContentSeo reçoit désormais des getters réactifs : on les résout pour les assertions.
+function seoArgs() {
+  const [source, fallback] = seoMock.mock.calls[0]!
+  const resolve = (v: unknown) => (typeof v === 'function' ? (v as () => unknown)() : v)
+  return [resolve(source), resolve(fallback)] as const
+}
+
 async function mountPage() {
   const Host = defineComponent({
     render() {
@@ -115,12 +122,13 @@ describe('pages/formations/[famille]/[slug]', () => {
   it('définit le SEO et le JSON-LD Course', async () => {
     await mountPage()
 
-    expect(seoMock).toHaveBeenCalledWith(
+    const [source, fallback] = seoArgs()
+    expect(source).toEqual(
       expect.objectContaining({
         seo_title: 'CACES R489 — Conduite de chariots élevateurs'
-      }),
-      'CACES R489 — Conduite de chariots élevateurs'
+      })
     )
+    expect(fallback).toBe('CACES R489 — Conduite de chariots élevateurs')
     const ldJson = headMock.mock.calls[0]![0].script[0].innerHTML
     expect(JSON.parse(ldJson)['@type']).toBe('Course')
   })
@@ -136,10 +144,11 @@ describe('pages/formations/[famille]/[slug]', () => {
       { label: 'Formations', to: '/formations' },
       { label: 'Formation indisponible' }
     ])
-    expect(seoMock).toHaveBeenCalledWith(
-      expect.objectContaining({ seo_title: 'Formation indisponible' }),
-      'Formation indisponible'
+    const [source, fallback] = seoArgs()
+    expect(source).toEqual(
+      expect.objectContaining({ seo_title: 'Formation indisponible', seo_noindex: true })
     )
+    expect(fallback).toBe('Formation indisponible')
   })
 
   it('affiche l’état indisponible pour une famille inconnue', async () => {
@@ -160,10 +169,11 @@ describe('pages/formations/[famille]/[slug]', () => {
       { label: 'Formations', to: '/formations' },
       { label: 'Erreur de chargement' }
     ])
-    expect(seoMock).toHaveBeenCalledWith(
-      expect.objectContaining({ seo_title: 'Erreur de chargement' }),
-      'Erreur de chargement'
+    const [source, fallback] = seoArgs()
+    expect(source).toEqual(
+      expect.objectContaining({ seo_title: 'Erreur de chargement', seo_noindex: true })
     )
+    expect(fallback).toBe('Erreur de chargement')
   })
 
   it('« Réessayer » retire le paramètre ?error=1 au lieu de relancer un appel voué à échouer', async () => {
