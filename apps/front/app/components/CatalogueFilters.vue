@@ -123,13 +123,11 @@
 
 <script setup lang="ts">
 import { computed, useId } from 'vue'
+import { Button } from '~/components/ui/button'
 import { Checkbox } from '~/components/ui/checkbox'
-
-interface FilterOption {
-  key: string
-  label: string
-  count?: number
-}
+import { Label } from '~/components/ui/label'
+import type { FilterOption } from '~/utils/catalog-filters'
+import { CERTIFICATION_OPTIONS, DURATION_OPTIONS, MODALITY_OPTIONS } from '~/utils/catalog-filters'
 
 const props = withDefaults(
   defineProps<{
@@ -148,26 +146,9 @@ const certifications = defineModel<string[]>('certifications', { required: true 
 const fallbackId = useId()
 const locationInputId = computed(() => props.locationInputId ?? `loc-${fallbackId}`)
 
-const modalityOptions: FilterOption[] = [
-  { key: 'presentiel', label: 'Présentiel' },
-  { key: 'distanciel', label: 'Distanciel' },
-  { key: 'hybride', label: 'Hybride' },
-  { key: 'intra', label: 'Intra' },
-  { key: 'inter', label: 'Inter' }
-]
-
-const durationOptions: FilterOption[] = [
-  { key: 'courte', label: 'Courte (≤ 1 jour)' },
-  { key: 'moyenne', label: '2 à 5 jours' },
-  { key: 'longue', label: 'Parcours long' }
-]
-
-const certificationOptions: FilterOption[] = [
-  { key: 'certification', label: 'Certification' },
-  { key: 'habilitation', label: 'Habilitation' },
-  { key: 'recyclage', label: 'Recyclage' },
-  { key: 'reglementaire', label: 'Réglementaire' }
-]
+const modalityOptions = MODALITY_OPTIONS
+const durationOptions = DURATION_OPTIONS
+const certificationOptions = CERTIFICATION_OPTIONS
 
 function toggle(list: string[], key: string, apply: (next: string[]) => void) {
   apply(list.includes(key) ? list.filter((item) => item !== key) : [...list, key])

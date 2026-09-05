@@ -9,7 +9,7 @@
     aria-hidden="true"
   >
     <path
-      d="M5.625 11.25L9.375 7.5L5.625 3.75"
+      d="M9.375 11.25L5.625 7.5L9.375 3.75"
       stroke="currentColor"
       stroke-width="1.5"
       stroke-linecap="round"

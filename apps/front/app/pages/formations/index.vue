@@ -18,15 +18,16 @@
           class="mt-2xl max-w-prose"
           role="search"
           aria-label="Rechercher une formation"
-          @submit.prevent
+          @submit.prevent="triggerSearch"
         >
           <SearchInput
             v-model="searchQuery"
             input-id="catalogue-search"
             sr-label="Rechercher une formation"
-            placeholder="Intitulé, compétence, certification ou besoin — ex. « CACES près de Lyon »"
+            placeholder="CACES, SST, habilitation électrique, hauteur…"
             button-label="Lancer la recherche"
             class="w-full"
+            @submit="triggerSearch"
           >
             <template #icon>
               <IconSparkle :size="18" class="shrink-0 text-accent" />
@@ -74,7 +75,7 @@
         </div>
 
         <!-- Raccourcis familles -->
-        <ul class="mt-2xl hidden grid-cols-1 gap-md sm:grid-cols-2 lg:grid lg:grid-cols-4">
+        <ul class="mt-2xl hidden grid-cols-1 gap-md sm:grid sm:grid-cols-2 lg:grid-cols-4">
           <li
             v-for="shortcut in familyShortcuts"
             :key="shortcut.label"
@@ -220,7 +221,7 @@
 
           <!-- Grille résultats -->
           <ul v-else class="mt-lg grid grid-cols-1 gap-md sm:grid-cols-2 xl:grid-cols-3">
-            <li v-for="formation in sortedFormations" :key="formation.slug">
+            <li v-for="formation in paginatedFormations" :key="formation.slug">
               <CenterFormationCard
                 :family="formation.family"
                 :title="formation.title"
@@ -234,54 +235,44 @@
           </ul>
 
           <!-- Pagination desktop -->
-          <nav
+          <Pagination
             v-if="filteredFormations.length"
-            class="mt-2xl hidden items-center justify-center gap-sm lg:flex"
+            v-model:page="currentPage"
+            :total="sortedFormations.length"
+            :items-per-page="perPage"
+            :sibling-count="1"
+            class="mt-2xl hidden items-center justify-center lg:flex"
             aria-label="Pagination du catalogue"
           >
-            <button
-              type="button"
-              class="flex h-control-sm w-control-sm items-center justify-center rounded-full border border-outline text-ink-subtle hover:bg-surface"
-              aria-label="Page précédente"
-            >
-              <IconChevronRight :size="16" class="rotate-180" />
-            </button>
-            <button
-              type="button"
-              aria-current="page"
-              class="flex h-control-sm w-control-sm items-center justify-center rounded-full bg-primary text-small font-semibold text-paper"
-            >
-              1
-            </button>
-            <button
-              v-for="page in [2, 3]"
-              :key="page"
-              type="button"
-              class="flex h-control-sm w-control-sm items-center justify-center rounded-full text-small font-semibold text-ink-body hover:bg-surface"
-            >
-              {{ page }}
-            </button>
-            <span class="px-xs text-ink-subtle">…</span>
-            <button
-              type="button"
-              class="flex h-control-sm w-control-sm items-center justify-center rounded-full text-small font-semibold text-ink-body hover:bg-surface"
-            >
-              12
-            </button>
-            <button
-              type="button"
-              class="flex h-control-sm w-control-sm items-center justify-center rounded-full border border-outline text-ink-body hover:bg-surface"
-              aria-label="Page suivante"
-            >
-              <IconChevronRight :size="16" />
-            </button>
-          </nav>
+            <PaginationContent v-slot="{ items }" class="gap-sm">
+              <PaginationPrevious
+                class="h-control-sm w-control-sm rounded-full border border-primary/25 p-0 text-ink-subtle hover:bg-surface"
+              />
+              <template v-for="item in items" :key="item.value">
+                <PaginationItem
+                  v-if="item.type === 'page'"
+                  :value="item.value"
+                  :is-active="item.value === currentPage"
+                >
+                  {{ item.value }}
+                </PaginationItem>
+                <PaginationEllipsis
+                  v-else-if="item.type === 'ellipsis'"
+                  class="h-control-sm w-control-sm text-ink-subtle"
+                />
+              </template>
+              <PaginationNext
+                class="h-control-sm w-control-sm rounded-full border border-primary/25 p-0 text-ink-body hover:bg-surface"
+              />
+            </PaginationContent>
+          </Pagination>
 
           <!-- Pagination mobile -->
           <button
-            v-if="filteredFormations.length"
+            v-if="hasMoreMobile"
             type="button"
             class="mx-auto mt-lg block rounded-full border border-outline px-lg py-sm text-small font-semibold text-ink-body hover:bg-surface lg:hidden"
+            @click="showMore"
           >
             Afficher plus de résultats
           </button>
@@ -376,6 +367,8 @@
 
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, watch } from 'vue'
+import { useCatalog, type FormationItem } from '~/composables/useCatalog'
+import { FAMILY_LABELS, getFilterLabel } from '~/utils/catalog-filters'
 
 definePageMeta({
   layout: 'with-breadcrumb',
@@ -391,144 +384,8 @@ useContentSeo(
   'Catalogue de formations — LEARN UP ACADEMY'
 )
 
-interface FormationItem {
-  slug: string
-  family: string
-  familyKey: string
-  title: string
-  description: string
-  meta: string
-  days: number
-  modalities: string[]
-  duration: 'courte' | 'moyenne' | 'longue'
-  certifications: string[]
-  region: string
-  status?: { type: 'success' | 'warning' | 'neutral'; label: string }
-  to: string
-}
-
-const formations: FormationItem[] = [
-  {
-    slug: 'caces-r489-chariots-elevateurs',
-    family: "CACES · Conduite d'engins",
-    familyKey: 'caces',
-    title: 'CACES R489 — chariots élévateurs',
-    description: 'Conduite en sécurité des chariots de manutention, catégories 1A à 5.',
-    meta: '2 à 5 jours · Inter / intra · CACES®',
-    days: 5,
-    modalities: ['presentiel', 'inter', 'intra'],
-    duration: 'moyenne',
-    certifications: ['certification'],
-    region: 'Île-de-France',
-    status: { type: 'success', label: 'Sessions ce mois-ci' },
-    to: '/formations/caces-conduite-engins/caces-r489-chariots-elevateurs'
-  },
-  {
-    slug: 'sst',
-    family: 'Santé · Secours',
-    familyKey: 'sante',
-    title: 'SST — Sauveteur secouriste du travail',
-    description: 'Formation initiale et maintien-actualisation des compétences (MAC).',
-    meta: '2 jours · Inter / intra · Certificat SST',
-    days: 2,
-    modalities: ['presentiel', 'inter', 'intra'],
-    duration: 'moyenne',
-    certifications: ['certification', 'recyclage'],
-    region: 'Île-de-France',
-    status: { type: 'warning', label: 'Prochaine le 18/09' },
-    to: '#'
-  },
-  {
-    slug: 'habilitation-b1-b2-br-bc',
-    family: 'Habilitations électriques',
-    familyKey: 'habilitations',
-    title: 'Habilitation B1-B2-BR-BC',
-    description: 'Personnel électricien intervenant en basse tension.',
-    meta: '3 jours · Inter / intra · Habilitation',
-    days: 3,
-    modalities: ['presentiel', 'inter', 'intra'],
-    duration: 'moyenne',
-    certifications: ['habilitation'],
-    region: 'Île-de-France',
-    status: { type: 'success', label: 'Sessions ce mois-ci' },
-    to: '#'
-  },
-  {
-    slug: 'travaux-hauteur-harnais',
-    family: 'Sécurité · Prévention',
-    familyKey: 'securite',
-    title: 'Travaux en hauteur — port du harnais',
-    description: "Vérification des EPI, points d'ancrage, déplacements sécurisés.",
-    meta: '1 jour · Inter / intra · Réglementaire',
-    days: 1,
-    modalities: ['presentiel', 'inter', 'intra'],
-    duration: 'courte',
-    certifications: ['reglementaire'],
-    region: 'Île-de-France',
-    status: { type: 'neutral', label: 'Sur demande' },
-    to: '#'
-  },
-  {
-    slug: 'aipr',
-    family: 'Sécurité · Prévention',
-    familyKey: 'securite',
-    title: 'AIPR — opérateur, encadrant, concepteur',
-    description: "Intervention à proximité des réseaux, préparation à l'examen QCM.",
-    meta: '1 jour · Inter / intra · AIPR',
-    days: 1,
-    modalities: ['presentiel', 'inter', 'intra'],
-    duration: 'courte',
-    certifications: ['habilitation', 'reglementaire'],
-    region: 'Île-de-France',
-    status: { type: 'success', label: 'Sessions ce mois-ci' },
-    to: '#'
-  },
-  {
-    slug: 'manager-securite',
-    family: 'Management',
-    familyKey: 'management',
-    title: 'Manager la sécurité au quotidien',
-    description: "Rôle de l'encadrement de proximité dans la prévention des risques.",
-    meta: '2 jours · Intra · Attestation',
-    days: 2,
-    modalities: ['presentiel', 'intra'],
-    duration: 'moyenne',
-    certifications: [],
-    region: 'National',
-    status: { type: 'neutral', label: 'Sur demande' },
-    to: '#'
-  },
-  {
-    slug: 'caces-r485-gerbeurs',
-    family: "CACES · Conduite d'engins",
-    familyKey: 'caces',
-    title: 'CACES R485 — gerbeurs à conducteur accompagnant',
-    description: 'Catégories 1 et 2, levée supérieure à 1,20 m.',
-    meta: '1 à 2 jours · Inter / intra · CACES®',
-    days: 2,
-    modalities: ['presentiel', 'inter', 'intra'],
-    duration: 'moyenne',
-    certifications: ['certification'],
-    region: 'Île-de-France',
-    status: { type: 'warning', label: 'Prochaine le 26/09' },
-    to: '#'
-  },
-  {
-    slug: 'recyclage-caces-r489',
-    family: "CACES · Conduite d'engins",
-    familyKey: 'caces',
-    title: 'Recyclage CACES R489 — toutes catégories',
-    description: 'Renouvellement avant échéance, théorie et pratique.',
-    meta: '2 jours · Inter / intra · CACES®',
-    days: 2,
-    modalities: ['presentiel', 'inter', 'intra'],
-    duration: 'moyenne',
-    certifications: ['certification', 'recyclage'],
-    region: 'Île-de-France',
-    status: { type: 'warning', label: '2 places le 19/09' },
-    to: '#'
-  }
-]
+const catalog = await useCatalog()
+const formations = computed(() => catalog.data.value?.formations ?? [])
 
 const familyShortcuts = [
   {
@@ -557,35 +414,6 @@ const familyShortcuts = [
   }
 ]
 
-const FAMILY_LABELS: Record<string, string> = {
-  securite: 'Sécurité & prévention',
-  caces: "CACES & conduite d'engins",
-  habilitations: 'Habilitations électriques',
-  sante: 'Santé & secours',
-  management: 'Management'
-}
-
-const MODALITY_LABELS: Record<string, string> = {
-  presentiel: 'Présentiel',
-  distanciel: 'Distanciel',
-  hybride: 'Hybride',
-  intra: 'Intra',
-  inter: 'Inter'
-}
-
-const DURATION_LABELS: Record<string, string> = {
-  courte: 'Courte (≤ 1 jour)',
-  moyenne: '2 à 5 jours',
-  longue: 'Parcours long'
-}
-
-const CERTIFICATION_LABELS: Record<string, string> = {
-  certification: 'Certification',
-  habilitation: 'Habilitation',
-  recyclage: 'Recyclage',
-  reglementaire: 'Réglementaire'
-}
-
 const searchQuery = ref('')
 const selectedFamilies = ref<string[]>([])
 const selectedModalities = ref<string[]>([])
@@ -605,18 +433,25 @@ const isFilterPanelOpen = ref(false)
 const filterPanel = ref<HTMLDialogElement | null>(null)
 const closeFilterButton = ref<HTMLButtonElement | null>(null)
 
-const familyOptions = computed(() =>
-  Object.entries(FAMILY_LABELS).map(([key, label]) => ({
+const perPage = ref(9)
+const currentPage = ref(1)
+
+const familyOptions = computed(() => {
+  const knownFamilies = Object.keys(FAMILY_LABELS)
+  const presentFamilies = [...new Set(formations.value.map((f) => f.familyKey))]
+  const keys = [...new Set([...knownFamilies, ...presentFamilies])]
+
+  return keys.map((key) => ({
     key,
-    label,
-    count: formations.filter((f) => f.familyKey === key).length
+    label: FAMILY_LABELS[key] ?? key,
+    count: formations.value.filter((f) => f.familyKey === key).length
   }))
-)
+})
 
 const filteredFormations = computed(() => {
   const query = searchQuery.value.trim().toLowerCase()
   const location = locationQuery.value.trim().toLowerCase()
-  return formations.filter((f) => {
+  return formations.value.filter((f) => {
     if (query && !`${f.title} ${f.family} ${f.description}`.toLowerCase().includes(query)) {
       return false
     }
@@ -646,11 +481,33 @@ const filteredFormations = computed(() => {
 })
 
 const sortedFormations = computed(() => {
+  const list = [...filteredFormations.value]
+  const query = searchQuery.value.trim().toLowerCase()
+
   if (sortBy.value === 'duree') {
-    return [...filteredFormations.value].sort((a, b) => a.days - b.days)
+    list.sort((a, b) => a.days - b.days)
+  } else if (sortBy.value === 'pertinence' && query) {
+    const score = (f: FormationItem) => {
+      let s = 0
+      if (f.title.toLowerCase().includes(query)) s += 3
+      if (f.family.toLowerCase().includes(query)) s += 2
+      if (f.description.toLowerCase().includes(query)) s += 1
+      return s
+    }
+    list.sort((a, b) => score(b) - score(a))
   }
-  return filteredFormations.value
+
+  return list
 })
+
+const paginatedFormations = computed(() => {
+  const start = (currentPage.value - 1) * perPage.value
+  return sortedFormations.value.slice(start, start + perPage.value)
+})
+
+const hasMoreMobile = computed(
+  () => paginatedFormations.value.length < sortedFormations.value.length
+)
 
 interface ActiveFilter {
   group: 'families' | 'modalities' | 'location' | 'durations' | 'certifications'
@@ -662,12 +519,12 @@ const activeFilters = computed<ActiveFilter[]>(() => [
   ...selectedFamilies.value.map((key) => ({
     group: 'families' as const,
     key,
-    label: FAMILY_LABELS[key] ?? key
+    label: getFilterLabel('families', key)
   })),
   ...selectedModalities.value.map((key) => ({
     group: 'modalities' as const,
     key,
-    label: MODALITY_LABELS[key] ?? key
+    label: getFilterLabel('modalities', key)
   })),
   ...(locationQuery.value.trim()
     ? [{ group: 'location' as const, key: 'location', label: locationQuery.value.trim() }]
@@ -675,12 +532,12 @@ const activeFilters = computed<ActiveFilter[]>(() => [
   ...selectedDurations.value.map((key) => ({
     group: 'durations' as const,
     key,
-    label: DURATION_LABELS[key] ?? key
+    label: getFilterLabel('durations', key)
   })),
   ...selectedCertifications.value.map((key) => ({
     group: 'certifications' as const,
     key,
-    label: CERTIFICATION_LABELS[key] ?? key
+    label: getFilterLabel('certifications', key)
   }))
 ])
 
@@ -704,11 +561,15 @@ function removeFilter(filter: ActiveFilter) {
 }
 
 function resetFilters() {
+  searchQuery.value = ''
   selectedFamilies.value = []
   selectedModalities.value = []
   locationQuery.value = ''
   selectedDurations.value = []
   selectedCertifications.value = []
+  sortBy.value = 'editorial'
+  currentPage.value = 1
+  perPage.value = 9
 }
 
 function openFilterPanel() {
@@ -723,6 +584,32 @@ function closeFilterPanel() {
   filterPanel.value?.close()
   isFilterPanelOpen.value = false
 }
+
+function showMore() {
+  perPage.value += 9
+}
+
+function triggerSearch(query?: string) {
+  searchQuery.value = (query ?? searchQuery.value).trim()
+  sortBy.value = searchQuery.value ? 'pertinence' : 'editorial'
+  currentPage.value = 1
+  perPage.value = 9
+}
+
+watch(
+  [
+    searchQuery,
+    selectedFamilies,
+    selectedModalities,
+    locationQuery,
+    selectedDurations,
+    selectedCertifications
+  ],
+  () => {
+    currentPage.value = 1
+    perPage.value = 9
+  }
+)
 
 watch(isFilterPanelOpen, (open) => {
   if (!import.meta.client) return
