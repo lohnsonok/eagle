@@ -1,3 +1,11 @@
+<template>
+  <AccordionContent v-bind="delegatedProps" class="overflow-hidden text-small">
+    <div :class="cn('pb-4 pt-0', props.class)">
+      <slot />
+    </div>
+  </AccordionContent>
+</template>
+
 <script setup lang="ts">
 import type { AccordionContentProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
@@ -9,11 +17,3 @@ const props = defineProps<AccordionContentProps & { class?: HTMLAttributes['clas
 
 const delegatedProps = reactiveOmit(props, 'class')
 </script>
-
-<template>
-  <AccordionContent v-bind="delegatedProps" class="overflow-hidden text-small">
-    <div :class="cn('pb-4 pt-0', props.class)">
-      <slot />
-    </div>
-  </AccordionContent>
-</template>

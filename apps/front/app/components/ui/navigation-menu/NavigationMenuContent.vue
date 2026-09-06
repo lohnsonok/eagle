@@ -1,3 +1,12 @@
+<template>
+  <NavigationMenuContent
+    v-bind="forwarded"
+    :class="cn('left-0 top-0 w-full md:absolute', props.class)"
+  >
+    <slot />
+  </NavigationMenuContent>
+</template>
+
 <script setup lang="ts">
 import type { NavigationMenuContentEmits, NavigationMenuContentProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
@@ -13,12 +22,3 @@ const delegatedProps = reactiveOmit(props, 'class')
 
 const forwarded = useForwardPropsEmits(delegatedProps, emits)
 </script>
-
-<template>
-  <NavigationMenuContent
-    v-bind="forwarded"
-    :class="cn('left-0 top-0 w-full md:absolute', props.class)"
-  >
-    <slot />
-  </NavigationMenuContent>
-</template>

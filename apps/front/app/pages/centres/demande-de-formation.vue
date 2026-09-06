@@ -240,7 +240,7 @@
 
         <!-- Sidebar : contexte de la demande -->
         <aside class="space-y-lg sm:sticky sm:top-lg">
-          <Card class="bg-surface p-lg rounded-md">
+          <Card class="bg-surface p-lg">
             <div class="mb-lg flex items-center justify-between">
               <h2 class="text-meta font-semibold uppercase tracking-wide text-ink-subtle">
                 Votre demande concerne
@@ -279,7 +279,7 @@
             </ul>
           </Card>
 
-          <Card class="p-lg rounded-md">
+          <Card class="p-lg">
             <ul class="space-y-sm text-small text-ink-muted">
               <li class="flex items-start gap-sm">
                 <IconCheck :size="16" class="mt-xs shrink-0 text-success" />

@@ -28,6 +28,7 @@ export const colors = {
     inverseMuted: 'rgb(255 255 255 / 72%)'
   },
   paper: '#ffffff',
+  paperWarm: '#fbf8f2',
   surface: '#f4f7fc',
   surfaceAlt: '#edf2fa',
   surfaceSoft: '#f8fafe',

@@ -115,7 +115,7 @@
             <!-- Public & prérequis -->
             <section aria-label="Public et prérequis">
               <div class="grid gap-md sm:grid-cols-2">
-                <Card class="rounded-md bg-surface">
+                <Card class="bg-surface">
                   <CardHeader class="p-lg pb-0">
                     <h3 class="font-sans text-h4 font-semibold text-ink">Public concerné</h3>
                   </CardHeader>
@@ -125,7 +125,7 @@
                     </ul>
                   </CardContent>
                 </Card>
-                <Card class="rounded-md bg-surface">
+                <Card class="bg-surface">
                   <CardHeader class="p-lg pb-0">
                     <h3 class="font-sans text-h4 font-semibold text-ink">Prérequis</h3>
                   </CardHeader>
@@ -179,7 +179,7 @@
             <!-- Modalités & évaluation -->
             <section aria-label="Modalités pédagogiques et évaluation">
               <div class="grid gap-md sm:grid-cols-2">
-                <Card class="rounded-md">
+                <Card>
                   <CardHeader class="p-lg pb-0">
                     <h3 class="font-sans text-h4 font-semibold text-ink">Modalités pédagogiques</h3>
                   </CardHeader>
@@ -201,7 +201,7 @@
                     </p>
                   </CardContent>
                 </Card>
-                <Card class="rounded-md">
+                <Card>
                   <CardHeader class="p-lg pb-0">
                     <h3 class="font-sans text-h4 font-semibold text-ink">Évaluation</h3>
                   </CardHeader>
@@ -382,7 +382,7 @@
           >
             <!-- L'essentiel -->
             <section id="demande" aria-labelledby="essentiel-title">
-              <Card class="rounded-md bg-surface">
+              <Card class="bg-surface">
                 <CardHeader class="p-lg pb-0">
                   <h2 id="essentiel-title" class="font-sans text-h4 font-semibold text-ink">
                     L'essentiel
@@ -427,7 +427,7 @@
 
             <!-- Certification -->
             <section aria-labelledby="certification-title">
-              <Card class="rounded-md">
+              <Card>
                 <CardHeader class="p-lg pb-0">
                   <h2 id="certification-title" class="font-sans text-h4 font-semibold text-ink">
                     Certification
@@ -456,7 +456,7 @@
             </section>
 
             <!-- Formation en intra -->
-            <section class="rounded-md bg-primary-dark p-lg" aria-labelledby="intra-title">
+            <section class="bg-primary-dark p-lg" aria-labelledby="intra-title">
               <h2 id="intra-title" class="font-sans text-h4 font-semibold text-ink-inverse">
                 Formation en intra
               </h2>

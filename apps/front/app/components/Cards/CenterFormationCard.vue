@@ -1,6 +1,7 @@
 <template>
-  <Card class="flex flex-col rounded-md">
+  <Card class="flex flex-col">
     <CardHeader class="space-y-sm p-md pb-0">
+      <p v-if="eyebrow" class="mb-md text-overline text-ink-subtle">{{ eyebrow }}</p>
       <p class="text-overline text-accent-text uppercase">{{ family }}</p>
       <CardTitle class="font-sans text-h4 font-semibold leading-tight tracking-normal text-ink">
         {{ title }}
@@ -23,6 +24,14 @@
         {{ status.label }}
       </Badge>
       <Button
+        v-if="variant === 'button'"
+        as-child
+        class="mt-md h-control w-full rounded-full px-lg text-small font-semibold hover:bg-primary-dark"
+      >
+        <NuxtLink :to="to">Voir la formation</NuxtLink>
+      </Button>
+      <Button
+        v-else
         as-child
         variant="link"
         class="mt-md h-auto self-end p-0 text-small font-bold text-primary hover:text-ink hover:no-underline"
@@ -42,7 +51,9 @@ withDefaults(
     meta: string
     status?: { type: 'success' | 'warning' | 'neutral'; label: string }
     to?: string
+    eyebrow?: string
+    variant?: 'default' | 'button'
   }>(),
-  { to: '#', description: '', status: undefined }
+  { to: '#', description: '', status: undefined, eyebrow: '', variant: 'default' }
 )
 </script>
