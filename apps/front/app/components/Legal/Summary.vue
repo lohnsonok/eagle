@@ -14,7 +14,7 @@
           cn(
             'block rounded-md border-l-4 px-3 py-2 text-small transition',
             section.id === activeId
-              ? 'border-accent bg-accent-soft/60 font-medium text-ink md:bg-transparent'
+              ? 'border-accent bg-accent-soft/60 font-medium text-primary md:bg-transparent'
               : 'border-transparent text-ink-muted hover:text-ink'
           )
         "
