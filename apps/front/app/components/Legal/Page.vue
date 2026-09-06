@@ -32,10 +32,10 @@
 
       <!-- Mobile page selector -->
       <div class="mt-2xl md:hidden">
-        <span class="sr-only">Sélecteur de page légale</span>
+        <Label for="legal-page-select" class="sr-only">Sélecteur de page légale</Label>
         <Select v-model="selectedPage">
           <SelectTrigger
-            aria-label="Sélecteur de page légale"
+            id="legal-page-select"
             class="h-control w-full rounded-lg border border-rule bg-surface px-lg text-small font-medium text-ink shadow-sm focus:ring-2 focus:ring-accent"
           >
             <span class="truncate">{{ currentLabel }}</span>
