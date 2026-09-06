@@ -9,7 +9,7 @@
         class="ml-7 hidden items-center gap-7 text-body font-semibold text-primary md:flex"
         aria-label="Navigation principale"
       >
-        <NuxtLink to="/" class="hover:text-ink">Formations</NuxtLink>
+        <NuxtLink to="/formations" class="hover:text-ink">Formations</NuxtLink>
         <NuxtLink to="/centres" class="hover:text-ink">Centres</NuxtLink>
         <NuxtLink to="/" class="hover:text-ink">À propos</NuxtLink>
         <NuxtLink to="/" class="hover:text-ink">Actualités</NuxtLink>

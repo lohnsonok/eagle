@@ -21,7 +21,8 @@ vi.stubGlobal('useAsyncData', async () => ({
 }))
 vi.stubGlobal('$fetch', vi.fn())
 vi.stubGlobal('logServerError', vi.fn())
-vi.stubGlobal('useRoute', () => ({ query: {} }))
+let routeQuery: Record<string, string> = {}
+vi.stubGlobal('useRoute', () => ({ query: routeQuery }))
 
 const stubs = {
   NuxtLink: { template: '<a><slot /></a>' },
@@ -69,6 +70,7 @@ async function mountPage() {
 describe('pages/formations/index', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    routeQuery = {}
   })
 
   it('affiche le catalogue statique complet', async () => {
@@ -110,6 +112,15 @@ describe('pages/formations/index', () => {
     await reset!.trigger('click')
 
     expect(wrapper.findAll('.formation-card')).toHaveLength(staticCatalog.length)
+  })
+
+  it('hydrate la recherche depuis ?q= (liens des états introuvable/erreur)', async () => {
+    routeQuery = { q: 'sst' }
+    const wrapper = await mountPage()
+
+    const cards = wrapper.findAll('.formation-card')
+    expect(cards).toHaveLength(1)
+    expect(cards[0]!.text()).toContain('SST')
   })
 
   it('définit le SEO du catalogue', async () => {

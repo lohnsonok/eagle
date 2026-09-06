@@ -442,13 +442,14 @@ const familyShortcuts = [
   }
 ]
 
-const searchQuery = ref('')
+// ?q= alimente la recherche (liens depuis les états introuvable/erreur).
+const searchQuery = ref(typeof route.query.q === 'string' ? route.query.q : '')
 const selectedFamilies = ref<string[]>([])
 const selectedModalities = ref<string[]>([])
 const locationQuery = ref('')
 const selectedDurations = ref<string[]>([])
 const selectedCertifications = ref<string[]>([])
-const sortBy = ref('editorial')
+const sortBy = ref(searchQuery.value ? 'pertinence' : 'editorial')
 const sortOptions = [
   { value: 'pertinence', label: 'Pertinence' },
   { value: 'editorial', label: 'Ordre éditorial' },

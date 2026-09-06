@@ -644,7 +644,10 @@ watchEffect(() => {
     : defaultBreadcrumb
 })
 
-const seoByState: Record<PageState, { seo_title: string; seo_description: string }> = {
+const seoByState: Record<
+  PageState,
+  { seo_title: string; seo_description: string; seo_noindex?: boolean }
+> = {
   found: {
     seo_title: 'CACES R489 — Conduite de chariots élevateurs',
     seo_description:
@@ -652,14 +655,20 @@ const seoByState: Record<PageState, { seo_title: string; seo_description: string
   },
   'not-found': {
     seo_title: 'Formation indisponible',
-    seo_description: "Cette page de formation n'existe pas ou n'est plus publiée."
+    seo_description: "Cette page de formation n'existe pas ou n'est plus publiée.",
+    seo_noindex: true
   },
   error: {
     seo_title: 'Erreur de chargement',
-    seo_description: "Le contenu de la formation n'a pas pu être chargé."
+    seo_description: "Le contenu de la formation n'a pas pu être chargé.",
+    seo_noindex: true
   }
 }
-useContentSeo(seoByState[pageState.value], seoByState[pageState.value].seo_title)
+// Getter réactif : le SEO suit pageState si refresh() change l'état affiché.
+useContentSeo(
+  () => seoByState[pageState.value],
+  () => seoByState[pageState.value].seo_title
+)
 
 function retry() {
   if (route.query.error) {

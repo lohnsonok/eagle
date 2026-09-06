@@ -528,7 +528,10 @@ watchEffect(() => {
     : defaultBreadcrumb
 })
 
-const seoByState: Record<PageState, { seo_title: string; seo_description: string }> = {
+const seoByState: Record<
+  PageState,
+  { seo_title: string; seo_description: string; seo_noindex?: boolean }
+> = {
   found: {
     seo_title: 'Centre LEARN UP ACADEMY de Créteil',
     seo_description:
@@ -536,14 +539,20 @@ const seoByState: Record<PageState, { seo_title: string; seo_description: string
   },
   'not-found': {
     seo_title: 'Centre introuvable',
-    seo_description: "Cette page de centre n'existe pas ou n'est plus disponible."
+    seo_description: "Cette page de centre n'existe pas ou n'est plus disponible.",
+    seo_noindex: true
   },
   error: {
     seo_title: 'Erreur de chargement',
-    seo_description: "Les informations du centre n'ont pas pu être chargées."
+    seo_description: "Les informations du centre n'ont pas pu être chargées.",
+    seo_noindex: true
   }
 }
-useContentSeo(seoByState[pageState.value], seoByState[pageState.value].seo_title)
+// Getter réactif : le SEO suit pageState si refresh() change l'état affiché.
+useContentSeo(
+  () => seoByState[pageState.value],
+  () => seoByState[pageState.value].seo_title
+)
 
 function retry() {
   if (route.query.error) {
