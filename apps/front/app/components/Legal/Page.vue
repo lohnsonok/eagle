@@ -58,7 +58,7 @@
 
       <div class="mt-2xl md:grid md:grid-cols-[220px_1fr] md:gap-2xl">
         <!-- Sommaire -->
-        <aside class="mb-2xl md:mb-0">
+        <aside class="mb-2xl md:mb-0" @click.capture="onSummaryClick">
           <Accordion type="single" collapsible class="md:hidden">
             <AccordionItem value="summary" class="border-0">
               <AccordionTrigger
@@ -141,7 +141,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import { cn } from '@/lib/utils'
 import { tabbedLegalPages, type LegalPage } from '~/data/legal'
 
@@ -165,8 +165,91 @@ watch(selectedPage, (newSlug) => {
   }
 })
 
-const activeSectionId = computed(() => {
-  const hash = route.hash.replace(/^#/, '')
-  return hash || props.page.sections[0]?.id || ''
+const activeSectionId = ref<string>(
+  (() => {
+    const hash = route.hash.replace(/^#/, '')
+    return props.page.sections.find((s) => s.id === hash)?.id || props.page.sections[0]?.id || ''
+  })()
+)
+
+// Seuil sous l'en-tête collant : une section est active dès que son titre
+// passe au-dessus. Plus stable qu'un IntersectionObserver, qui fait osciller
+// l'état pendant le défilement fluide après un clic dans le sommaire.
+const SCROLL_THRESHOLD = 140
+const CLICK_LOCK_MS = 1000
+
+let rafId: number | null = null
+let lockUntil = 0
+let lockTimer: ReturnType<typeof setTimeout> | null = null
+
+function computeActiveSection() {
+  const sections = props.page.sections
+  if (!sections.length) return
+
+  const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2
+  if (atBottom) {
+    activeSectionId.value = sections[sections.length - 1]!.id
+    return
+  }
+
+  let current = sections[0]!.id
+  for (const section of sections) {
+    const el = document.getElementById(section.id)
+    if (!el) continue
+    if (el.getBoundingClientRect().top <= SCROLL_THRESHOLD) {
+      current = section.id
+    } else {
+      break
+    }
+  }
+  activeSectionId.value = current
+}
+
+function onScroll() {
+  if (rafId !== null) return
+  rafId = requestAnimationFrame(() => {
+    rafId = null
+    if (Date.now() < lockUntil) return
+    computeActiveSection()
+  })
+}
+
+function onSummaryClick(event: MouseEvent) {
+  const anchor = (event.target as HTMLElement).closest('a[href^="#"]')
+  const id = anchor?.getAttribute('href')?.slice(1)
+  if (!id || !props.page.sections.some((s) => s.id === id)) return
+
+  activeSectionId.value = id
+  lockUntil = Date.now() + CLICK_LOCK_MS
+  if (lockTimer) clearTimeout(lockTimer)
+  lockTimer = setTimeout(() => {
+    lockTimer = null
+    lockUntil = 0
+    computeActiveSection()
+  }, CLICK_LOCK_MS)
+}
+
+onMounted(() => {
+  nextTick(computeActiveSection)
+  window.addEventListener('scroll', onScroll, { passive: true })
+  window.addEventListener('resize', onScroll, { passive: true })
 })
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', onScroll)
+  window.removeEventListener('resize', onScroll)
+  if (rafId !== null) cancelAnimationFrame(rafId)
+  if (lockTimer) clearTimeout(lockTimer)
+})
+
+watch(
+  () => props.page.slug,
+  () => {
+    activeSectionId.value =
+      props.page.sections.find((s) => s.id === route.hash.replace(/^#/, ''))?.id ||
+      props.page.sections[0]?.id ||
+      ''
+    nextTick(computeActiveSection)
+  }
+)
 </script>
