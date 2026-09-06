@@ -1,37 +1,36 @@
 <template>
   <div class="flex flex-1 flex-col bg-paper">
-    <header class="border-b border-rule bg-linear-to-b from-paper to-surface">
+    <header class="bg-linear-to-b from-paper to-surface">
       <div class="mx-auto w-full max-w-container px-gutter-mobile py-2xl md:px-gutter">
         <h1 class="font-display text-h1 font-extrabold text-ink">
           {{ page.title }}
         </h1>
         <p class="mt-sm text-small text-ink-muted">Dernière mise à jour : {{ page.lastUpdated }}</p>
+
+        <nav aria-label="Pages légales" class="mt-2xl hidden border-b border-rule pb-0 md:block">
+          <ul class="-mb-px flex items-center gap-2xl">
+            <li v-for="tab in tabbedPages" :key="tab.slug">
+              <NuxtLink
+                :to="`/${tab.slug}`"
+                :aria-current="tab.slug === currentSlug ? 'page' : undefined"
+                :class="
+                  cn(
+                    'inline-block py-md text-small font-medium transition',
+                    tab.slug === currentSlug
+                      ? 'border border-rule border-b-0 rounded-t-md bg-paper text-ink'
+                      : 'border-b-2 border-transparent text-ink-muted hover:text-ink'
+                  )
+                "
+              >
+                {{ tab.label }}
+              </NuxtLink>
+            </li>
+          </ul>
+        </nav>
       </div>
     </header>
 
     <div class="mx-auto w-full max-w-container px-gutter-mobile pb-xl md:px-gutter">
-      <!-- Desktop tabs -->
-      <nav aria-label="Pages légales" class="mt-2xl hidden border-b border-rule pb-0 md:block">
-        <ul class="-mb-px flex items-center gap-2xl">
-          <li v-for="tab in tabbedPages" :key="tab.slug">
-            <NuxtLink
-              :to="`/${tab.slug}`"
-              :aria-current="tab.slug === currentSlug ? 'page' : undefined"
-              :class="
-                cn(
-                  'inline-block py-md text-small font-medium transition',
-                  tab.slug === currentSlug
-                    ? 'border border-rule border-b-0 rounded-t-md bg-paper text-ink'
-                    : 'border-b-2 border-transparent text-ink-muted hover:text-ink'
-                )
-              "
-            >
-              {{ tab.label }}
-            </NuxtLink>
-          </li>
-        </ul>
-      </nav>
-
       <!-- Mobile page selector -->
       <div class="mt-2xl md:hidden">
         <Label id="legal-page-select-label" for="legal-page-select" class="sr-only"
