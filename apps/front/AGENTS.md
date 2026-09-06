@@ -4,7 +4,7 @@ Lire d'abord `AGENTS.md` à la racine.
 
 ## Architecture
 
-- `app/app.vue` avec `<NuxtPage :page-key="(route) => route.fullPath" />` — obligatoire pour que les routes dynamiques se rechargent.
+- `app/app.vue` avec `<NuxtPage :page-key="(route) => route.path + route.search" />` — obligatoire pour que les routes dynamiques se rechargent. Le hash est exclu : un clic dans un sommaire (`#section`) ne doit pas remonter la page.
 - `app/pages/` : routing Nuxt 4 (`index.vue`, `[famille].vue`, `[famille]/[slug].vue`).
 - `app/components/` : composants Vue, nommés PascalCase.
 - `app/layouts/default.vue` : layout racine.
