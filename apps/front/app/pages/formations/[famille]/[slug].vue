@@ -37,7 +37,10 @@
                   as-child
                   class="h-control rounded-full bg-accent px-md py-sm text-button font-semibold text-ink transition hover:bg-accent-text"
                 >
-                  <NuxtLink to="#demande">Demander cette formation</NuxtLink>
+                  <NuxtLink
+                    :to="`/centres/demande-de-formation?famille=${famille}&formation=${slug}`"
+                    >Demander cette formation</NuxtLink
+                  >
                 </Button>
                 <Button
                   as-child
@@ -401,7 +404,10 @@
                       as-child
                       class="h-control w-full rounded-md bg-primary-dark px-md py-sm text-button font-semibold text-ink-inverse transition hover:bg-primary"
                     >
-                      <NuxtLink to="#">Demander cette formation</NuxtLink>
+                      <NuxtLink
+                        :to="`/centres/demande-de-formation?famille=${famille}&formation=${slug}`"
+                        >Demander cette formation</NuxtLink
+                      >
                     </Button>
                     <Button
                       as-child
@@ -462,7 +468,9 @@
                 as-child
                 class="mt-md h-control w-full rounded-md bg-paper px-md py-sm text-button font-semibold text-ink transition hover:bg-surface"
               >
-                <NuxtLink to="#">Organiser cette formation dans mon entreprise</NuxtLink>
+                <NuxtLink :to="`/centres/demande-de-formation?famille=${famille}&formation=${slug}`"
+                  >Organiser cette formation dans mon entreprise</NuxtLink
+                >
               </Button>
             </section>
 
@@ -495,7 +503,9 @@
             as-child
             class="h-control shrink-0 rounded-full bg-accent px-md py-sm text-button font-semibold text-ink transition hover:bg-accent-text"
           >
-            <NuxtLink to="#demande">Demander cette formation</NuxtLink>
+            <NuxtLink :to="`/centres/demande-de-formation?famille=${famille}&formation=${slug}`"
+              >Demander cette formation</NuxtLink
+            >
           </Button>
         </div>
       </div>

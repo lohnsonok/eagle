@@ -344,7 +344,9 @@
             as-child
             class="h-control w-full rounded-full bg-paper px-lg py-sm text-center text-button font-bold text-ink transition hover:bg-surface sm:w-auto"
           >
-            <NuxtLink to="#">Demander une formation</NuxtLink>
+            <NuxtLink :to="`/centres/demande-de-formation?centre=${slug}`"
+              >Demander une formation</NuxtLink
+            >
           </Button>
           <Button
             as-child

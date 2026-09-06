@@ -2,7 +2,9 @@ import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import IconAccessibility from '~/components/icons/IconAccessibility.vue'
 import IconAward from '~/components/icons/IconAward.vue'
+import IconBook from '~/components/icons/IconBook.vue'
 import IconBuilding from '~/components/icons/IconBuilding.vue'
+import IconCalendar from '~/components/icons/IconCalendar.vue'
 import IconChevronLeft from '~/components/icons/IconChevronLeft.vue'
 import IconChevronRight from '~/components/icons/IconChevronRight.vue'
 import IconClock from '~/components/icons/IconClock.vue'
@@ -23,7 +25,9 @@ import IconTimetable from '~/components/icons/IconTimetable.vue'
 const icons = {
   IconAccessibility,
   IconAward,
+  IconBook,
   IconBuilding,
+  IconCalendar,
   IconChevronLeft,
   IconChevronRight,
   IconClock,

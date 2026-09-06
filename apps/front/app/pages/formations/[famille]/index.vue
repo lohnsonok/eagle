@@ -260,7 +260,9 @@
             variant="outline"
             class="h-control w-full rounded-full border-outline-inverse bg-transparent px-lg text-small font-semibold text-ink-inverse transition hover:bg-transparent hover:text-ink-inverse sm:w-auto"
           >
-            <NuxtLink to="#">Faire une demande</NuxtLink>
+            <NuxtLink :to="`/centres/demande-de-formation?famille=${famille}`"
+              >Faire une demande</NuxtLink
+            >
           </Button>
         </CtaBanner>
       </section>
