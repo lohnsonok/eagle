@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-1 flex-col bg-paper">
-    <div class="mx-auto w-full max-w-container px-gutter-mobile py-xl md:px-gutter">
-      <header class="mt-md border-b border-rule bg-linear-to-b from-paper to-surface">
+    <div class="mx-auto w-full max-w-container px-gutter-mobile pb-xl md:px-gutter">
+      <header class="py-2xl border-b border-rule bg-linear-to-b from-paper to-surface">
         <h1 class="font-display text-h1 font-extrabold text-ink">
           {{ page.title }}
         </h1>
