@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import LegalPage from '~/components/LegalPage.vue'
+import LegalPage from '~/components/Legal/Page.vue'
 import { legalPages } from '~/data/legal'
 
 const navigateToMock = vi.fn()

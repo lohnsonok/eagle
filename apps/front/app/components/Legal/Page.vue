@@ -1,8 +1,8 @@
 <template>
   <div class="flex flex-1 flex-col bg-paper">
-    <div class="mx-auto w-full max-w-container px-gutter-mobile py-xl md:px-gutter">
-      <Breadcrumbs :items="breadcrumbItems" />
-
+    <div
+      class="mx-auto w-full max-w-container px-gutter-mobile py-xl md:px-gutter bg-linear-to-b from-paper to-surface"
+    >
       <header class="mt-md">
         <h1 class="font-display text-h1 font-extrabold text-ink">
           {{ page.title }}
@@ -82,12 +82,12 @@
         </aside>
 
         <!-- Article -->
-        <article class="max-w-[720px] space-y-2xl">
+        <article class="max-w-180 space-y-2xl">
           <section
             v-for="section in page.sections"
             :id="section.id"
             :key="section.id"
-            class="scroll-mt-[96px]"
+            class="scroll-mt-24"
           >
             <h2 class="font-display text-h3 font-extrabold text-ink">
               {{ section.title }}
@@ -150,8 +150,6 @@ const props = defineProps<{
 
 const route = useRoute()
 const currentSlug = computed(() => (route.params.legal as string) || props.page.slug)
-
-const breadcrumbItems = computed(() => [{ label: 'Accueil', to: '/' }, { label: props.page.title }])
 
 const tabbedPages = tabbedLegalPages
 

@@ -6,6 +6,10 @@
 import { computed, watchEffect } from 'vue'
 import { legalPages } from '~/data/legal'
 
+definePageMeta({
+  layout: 'with-breadcrumb'
+})
+
 const route = useRoute()
 const slug = computed(() => route.params.legal as string)
 
@@ -24,10 +28,6 @@ if (!page.value) {
     statusMessage: 'Page non trouvée'
   })
 }
-
-definePageMeta({
-  layout: 'with-breadcrumb'
-})
 
 useContentSeo(
   computed(() => ({
