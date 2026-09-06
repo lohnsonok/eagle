@@ -20,6 +20,7 @@ const stubs = {
   NuxtLink: { template: '<a :href="$attrs.to ?? $attrs.href"><slot /></a>' },
   Button: { template: '<button><slot /></button>' },
   Breadcrumbs: { template: '<nav><slot /></nav>' },
+  Label: { template: '<label :for="$attrs.for" :id="$attrs.id"><slot /></label>' },
   Select: {
     props: ['modelValue'],
     emits: ['update:modelValue'],

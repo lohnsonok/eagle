@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-1 flex-col bg-paper">
     <div class="mx-auto w-full max-w-container px-gutter-mobile py-xl md:px-gutter">
-      <header class="mt-md bg-linear-to-b from-paper to-surface">
+      <header class="mt-md border-b border-rule bg-linear-to-b from-paper to-surface">
         <h1 class="font-display text-h1 font-extrabold text-ink">
           {{ page.title }}
         </h1>
@@ -32,10 +32,12 @@
 
       <!-- Mobile page selector -->
       <div class="mt-2xl md:hidden">
-        <Label for="legal-page-select" class="sr-only">Sélecteur de page légale</Label>
-        <Select v-model="selectedPage">
+        <Label id="legal-page-select-label" for="legal-page-select" class="sr-only"
+          >Sélecteur de page légale</Label
+        >
+        <Select id="legal-page-select" v-model="selectedPage">
           <SelectTrigger
-            id="legal-page-select"
+            aria-labelledby="legal-page-select-label"
             class="h-control w-full rounded-lg border border-rule bg-surface px-lg text-small font-medium text-ink shadow-sm focus:ring-2 focus:ring-accent"
           >
             <span class="truncate">{{ currentLabel }}</span>
