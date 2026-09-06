@@ -35,8 +35,8 @@ export default defineNuxtConfig({
     componentDir: '@/components/ui'
   },
   components: [
-    { path: '~/components/Legal', pathPrefix: true },
-    { path: '~/components', pathPrefix: false, ignore: ['Legal/**'] }
+    { path: '~/components/Legal', prefix: 'Legal' },
+    { path: '~/components', pathPrefix: false, pattern: ['**/*.vue', '!Legal/**/*.vue'] }
   ],
   runtimeConfig: {
     directusUrl: directusUrlServer,
