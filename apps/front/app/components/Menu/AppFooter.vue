@@ -101,20 +101,25 @@
         class="mt-2xl flex flex-col gap-sm border-t border-outline-inverse pt-lg text-small sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-lg sm:gap-y-sm"
       >
         <p class="text-ink-inverse-muted">© {{ year }} LEARN UP ACADEMY</p>
-        <NuxtLink to="/" class="text-ink-inverse-muted hover:text-ink-inverse"
-          >Mentions légales</NuxtLink
+        <NuxtLink
+          v-for="link in footerLegalLinks"
+          :key="link.slug"
+          :to="`/${link.slug}`"
+          class="text-ink-inverse-muted hover:text-ink-inverse"
         >
-        <NuxtLink to="/" class="text-ink-inverse-muted hover:text-ink-inverse"
-          >Confidentialité</NuxtLink
-        >
-        <NuxtLink to="/" class="text-ink-inverse-muted hover:text-ink-inverse"
-          >Accessibilité — RGAA AA</NuxtLink
-        >
+          {{ link.label }}
+        </NuxtLink>
       </div>
     </div>
   </footer>
 </template>
 
 <script setup lang="ts">
+import { legalLiens } from '~/data/navigation'
+
 const year = new Date().getFullYear()
+
+const footerLegalLinks = legalLiens.filter((link) =>
+  ['mentions-legales', 'confidentialite', 'accessibilite'].includes(link.slug)
+)
 </script>
