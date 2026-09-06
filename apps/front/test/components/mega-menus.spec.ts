@@ -126,9 +126,11 @@ describe('MegaMenuActualites', () => {
     expect(wrapper.text()).toContain('Le centre de Toulouse ouvre une offre management')
   })
 
-  it('les liens article pointent vers /blog/{slug}', () => {
+  it('les liens article pointent vers /actualites/{slug}', () => {
     const wrapper = mount(MegaMenuActualites, { global: { stubs } })
 
-    expect(wrapper.find('a[href="/blog/recyclage-caces-echeances-2027-idf"]').exists()).toBe(true)
+    expect(wrapper.find('a[href="/actualites/recyclage-caces-echeances-2027-idf"]').exists()).toBe(
+      true
+    )
   })
 })

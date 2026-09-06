@@ -6,7 +6,7 @@
       <ul class="mt-sm space-y-1">
         <li v-for="rubrique in rubriquesActualites" :key="rubrique.slug">
           <NuxtLink
-            to="/blog"
+            to="/actualites"
             class="block rounded-md px-2 py-1.5 text-body text-primary transition-colors hover:bg-surface hover:text-ink"
             @click="$emit('close')"
           >
@@ -52,7 +52,7 @@
       <ul class="mt-sm space-y-sm">
         <li v-for="actu in actusAffichees" :key="actu.slug">
           <NuxtLink
-            :to="`/blog/${actu.slug}`"
+            :to="`/actualites/${actu.slug}`"
             class="block rounded-md px-2 py-1.5 transition-colors hover:bg-surface"
             @click="$emit('close')"
           >
@@ -67,7 +67,7 @@
         </li>
       </ul>
       <NuxtLink
-        to="/blog"
+        to="/actualites"
         class="mt-sm inline-block text-small font-semibold text-ink underline underline-offset-4"
         @click="$emit('close')"
       >

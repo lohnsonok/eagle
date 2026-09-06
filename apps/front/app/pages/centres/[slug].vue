@@ -78,7 +78,7 @@
           >
             <!-- Informations pratiques -->
             <section aria-labelledby="infos-title">
-              <Card class="h-fit rounded-md bg-surface">
+              <Card class="h-fit bg-surface">
                 <CardHeader class="p-lg pb-0">
                   <h2 id="infos-title" class="font-sans text-h4 font-semibold text-ink">
                     Informations pratiques
@@ -156,7 +156,7 @@
 
             <!-- Qualité -->
             <section aria-labelledby="qualite-title">
-              <Card class="h-fit rounded-md bg-paper">
+              <Card class="h-fit bg-paper">
                 <CardHeader class="p-lg pb-0">
                   <h2 id="qualite-title" class="font-sans text-h4 font-semibold text-ink">
                     Qualité et certifications

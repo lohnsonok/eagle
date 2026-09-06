@@ -12,6 +12,7 @@ import IconDownload from '~/components/icons/IconDownload.vue'
 import IconFactory from '~/components/icons/IconFactory.vue'
 import IconFileOff from '~/components/icons/IconFileOff.vue'
 import IconFilter from '~/components/icons/IconFilter.vue'
+import IconLink from '~/components/icons/IconLink.vue'
 import IconMail from '~/components/icons/IconMail.vue'
 import IconMapPin from '~/components/icons/IconMapPin.vue'
 import IconMapPinOff from '~/components/icons/IconMapPinOff.vue'
@@ -20,6 +21,7 @@ import IconParking from '~/components/icons/IconParking.vue'
 import IconPhone from '~/components/icons/IconPhone.vue'
 import IconRefresh from '~/components/icons/IconRefresh.vue'
 import IconSearchMinus from '~/components/icons/IconSearchMinus.vue'
+import IconShare from '~/components/icons/IconShare.vue'
 import IconTimetable from '~/components/icons/IconTimetable.vue'
 
 const icons = {
@@ -36,6 +38,7 @@ const icons = {
   IconFactory,
   IconFileOff,
   IconFilter,
+  IconLink,
   IconMail,
   IconMapPin,
   IconMapPinOff,
@@ -43,6 +46,7 @@ const icons = {
   IconPhone,
   IconRefresh,
   IconSearchMinus,
+  IconShare,
   IconTimetable
 }
 

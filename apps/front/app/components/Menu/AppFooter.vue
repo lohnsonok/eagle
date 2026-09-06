@@ -84,7 +84,7 @@
               >
             </li>
             <li>
-              <NuxtLink to="/" class="text-ink-inverse-muted hover:text-ink-inverse"
+              <NuxtLink to="/actualites" class="text-ink-inverse-muted hover:text-ink-inverse"
                 >Actualités</NuxtLink
               >
             </li>
