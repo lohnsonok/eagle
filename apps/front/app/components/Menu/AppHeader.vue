@@ -2,7 +2,7 @@
   <header class="border-b border-rule bg-paper">
     <div
       ref="rootEl"
-      class="relative mx-auto flex items-center max-w-container px-gutter-mobile md:px-gutter py-3 text-sm"
+      class="relative mx-auto flex max-w-container items-center px-gutter-mobile md:px-gutter py-3"
     >
       <NuxtLink to="/" aria-label="LEARN UP ACADEMY — Accueil" class="inline-block">
         <Logo />

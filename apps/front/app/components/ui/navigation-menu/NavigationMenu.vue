@@ -1,13 +1,3 @@
-<template>
-  <NavigationMenuRoot
-    v-bind="forwarded"
-    :class="cn('z-10 flex max-w-max flex-1 items-center justify-center', props.class)"
-  >
-    <slot />
-    <NavigationMenuViewport />
-  </NavigationMenuRoot>
-</template>
-
 <script setup lang="ts">
 import type { NavigationMenuRootEmits, NavigationMenuRootProps } from 'reka-ui'
 import type { HTMLAttributes } from 'vue'
@@ -24,3 +14,13 @@ const delegatedProps = reactiveOmit(props, 'class')
 
 const forwarded = useForwardPropsEmits(delegatedProps, emits)
 </script>
+
+<template>
+  <NavigationMenuRoot
+    v-bind="forwarded"
+    :class="cn('z-10 flex max-w-max flex-1 items-center justify-center', props.class)"
+  >
+    <slot />
+    <NavigationMenuViewport />
+  </NavigationMenuRoot>
+</template>

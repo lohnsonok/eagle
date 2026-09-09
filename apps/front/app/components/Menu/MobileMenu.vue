@@ -221,11 +221,7 @@
             <AccordionContent>
               <ul class="pb-sm pl-2">
                 <li v-for="rubrique in rubriquesActualites" :key="rubrique.slug">
-                  <NuxtLink
-                    to="/actualites"
-                    class="block py-2 text-body text-primary"
-                    @click="closeMenu"
-                  >
+                  <NuxtLink to="/blog" class="block py-2 text-body text-primary" @click="closeMenu">
                     {{ rubrique.label }}
                   </NuxtLink>
                 </li>
@@ -233,11 +229,7 @@
               <p class="pb-1 pl-2 text-small font-semibold text-ink-muted">Par région</p>
               <ul class="pb-sm pl-2">
                 <li v-for="region in regions.slice(0, 2)" :key="region.slug">
-                  <NuxtLink
-                    to="/actualites"
-                    class="block py-2 text-body text-primary"
-                    @click="closeMenu"
-                  >
+                  <NuxtLink to="/blog" class="block py-2 text-body text-primary" @click="closeMenu">
                     {{ region.label }}
                   </NuxtLink>
                 </li>
