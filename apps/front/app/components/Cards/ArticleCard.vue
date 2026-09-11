@@ -1,5 +1,7 @@
 <template>
-  <article class="flex flex-col rounded-md border border-rule bg-paper p-md">
+  <article
+    class="flex flex-col rounded-md border border-rule bg-paper p-md transition hover:border-primary/40 hover:shadow-md"
+  >
     <div
       class="flex aspect-3/1 items-center justify-center rounded-sm border border-dashed border-outline bg-surface-alt text-center text-small text-ink-muted"
     >
