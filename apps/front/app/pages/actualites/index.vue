@@ -69,6 +69,7 @@
           </div>
 
           <Card
+            v-reveal
             class="mt-md overflow-hidden transition hover:border-primary/40 hover:shadow-md lg:flex"
           >
             <div
@@ -99,7 +100,7 @@
                 :to="`/actualites/${featuredArticle.slug}`"
                 class="mt-xs text-small font-semibold text-ink transition-colors hover:text-accent-text"
               >
-                Lire l'article →
+                Lire l'article <span class="link-arrow">→</span>
               </NuxtLink>
             </div>
           </Card>
@@ -115,6 +116,7 @@
             <li
               v-for="(article, index) in filteredArticles"
               :key="article.slug"
+              v-reveal="revealStagger(index % 3)"
               :class="articleClass(index)"
             >
               <ArticleCard
@@ -218,6 +220,8 @@
 </template>
 
 <script setup lang="ts">
+import { revealStagger } from '~/utils/reveal'
+
 useContentSeo(
   {
     seo_title: 'Actualités — LEARN UP ACADEMY',

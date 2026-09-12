@@ -17,7 +17,7 @@
       :to="to"
       class="mt-md text-small font-bold text-primary transition-colors hover:text-accent-text"
     >
-      Lire l'article →
+      Lire l'article <span class="link-arrow">→</span>
     </NuxtLink>
   </article>
 </template>

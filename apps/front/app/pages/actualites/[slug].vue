@@ -105,7 +105,7 @@
               <Card class="p-lg lg:hidden">
                 <p class="text-overline text-ink-subtle">Formation liée</p>
                 <p class="mt-xs text-meta font-medium text-ink-muted">
-                  {{ article.relatedFormation.family }}
+                  {{ article.relatedFormation.subFamily }}
                 </p>
                 <h3 class="mt-xs text-h4 font-bold text-ink">
                   {{ article.relatedFormation.title }}
@@ -153,7 +153,7 @@
               <CenterFormationCard
                 eyebrow="Formation liée"
                 variant="button"
-                :family="article.relatedFormation.family"
+                :sub-family="article.relatedFormation.subFamily"
                 :title="article.relatedFormation.title"
                 :meta="article.relatedFormation.meta"
                 :status="article.relatedFormation.status"
@@ -189,7 +189,7 @@
               to="/actualites"
               class="hidden text-small font-semibold text-ink transition-colors hover:text-accent-text sm:inline"
             >
-              Toute l'actualité →
+              Toute l'actualité <span class="link-arrow">→</span>
             </NuxtLink>
           </div>
           <ul class="mt-lg grid grid-cols-1 gap-lg sm:grid-cols-3">
@@ -328,7 +328,7 @@ const article = {
   ],
   tags: ['CACES R489', 'Recyclage', 'Autorisation de conduite'],
   relatedFormation: {
-    family: 'CACES · Conduite d’engins',
+    subFamily: 'Chariots élévateurs',
     title: 'Recyclage CACES R489 — toutes catégories',
     meta: '2 jours · Inter / Intra',
     status: { type: 'success' as const, label: 'Sessions ce mois-ci' },
