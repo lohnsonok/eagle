@@ -290,8 +290,13 @@ import {
   AccordionItem,
   AccordionTrigger
 } from '~/components/ui/accordion'
-import { aproposLiens, legalLiens } from '~/data/navigation'
-import { useMenuActualites, useMenuCentres, useMenuFamilles } from '~/composables/useMenuData'
+import { aproposLiens } from '~/data/navigation'
+import {
+  useMenuActualites,
+  useMenuCentres,
+  useMenuFamilles,
+  useMenuLegalPages
+} from '~/composables/useMenuData'
 
 const open = defineModel<boolean>('open', { default: false })
 const dialogEl = ref<HTMLDialogElement>()
@@ -301,6 +306,7 @@ let previousFocus: Element | null = null
 const familles = useMenuFamilles()
 const { regions, centresParRegion } = useMenuCentres()
 const { rubriques: actualitesRubriques, regions: actualitesRegions } = useMenuActualites()
+const legalLiens = useMenuLegalPages()
 
 function centresForRegion(label: string) {
   return centresParRegion.value.get(label) ?? []
