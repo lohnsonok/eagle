@@ -7,7 +7,14 @@
 // la saute proprement (log + skip) plutôt que d'échouer — il devient
 // pleinement actif une fois ST-11 livré, sans changement requis.
 
-import { articles, centres, famillesFormation, formations, sousFamillesFormation } from './data.mjs'
+import {
+  articles,
+  centres,
+  famillesFormation,
+  formations,
+  pagesLegales,
+  sousFamillesFormation
+} from './data.mjs'
 import { log, logError } from '../logger.mjs'
 
 const DIRECTUS_URL = process.env.DIRECTUS_URL ?? 'http://localhost:8055'
@@ -25,6 +32,7 @@ const DATASETS = [
     refs: [{ key: 'familleSlug', collection: 'familles_formation', field: 'famille' }]
   },
   { collection: 'articles', items: articles },
+  { collection: 'pages_legales', items: pagesLegales },
   {
     collection: 'formations',
     items: formations,
